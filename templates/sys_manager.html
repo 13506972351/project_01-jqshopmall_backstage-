@@ -435,6 +435,8 @@
                                 alert('要添加的商品分类已经存在')
                             }else {
                                 display_table (res,'.goods_class_tbody')
+                                $('.class_frame').val('')
+
                             }
                         }
                     })
@@ -520,6 +522,8 @@
                                 alert('要添加的颜色ID已经存在')
                             }else {
                                 display_table (res,'.color_tbody')
+                                $('.color_frame').val('')
+                                $('.colorid_frame').val('')
                             }
                         }
                     })
@@ -542,6 +546,8 @@
                                 alert('没有相应的颜色')
                             }else {
                                 display_table (res,'.color_tbody')
+                                $('.color_frame').val('')
+                                $('.colorid_frame').val('')
                             }
                         }
                     })
@@ -592,6 +598,8 @@
                                 alert('要添加的尺码ID已经存在')
                             }else {
                                 display_table (res,'.size_tbody')
+                                $('.size_frame').val('')
+                                $('.sizeid_frame').val('')
                             }
                         }
                     })
@@ -614,6 +622,8 @@
                                 alert('没有相应的颜色')
                             }else {
                                 display_table (res,'.size_tbody')
+                                $('.size_frame').val('')
+                                $('.sizeid_frame').val('')
                             }
                         }
                     })
@@ -694,7 +704,7 @@
             })
             // （二级页面上、弹出三级页面）点击（选择尺码）按钮、弹加载尺码复选框
             $('.color_Selected').on('click','.select_size_btn',function (){   //如果父子都是动态生成的元素，父元素用再上一级
-
+                // console.log(8888)
                 var btn_id=this.id   //将选择尺码按钮的id值取出
                 // console.log('btn_id:',btn_id)
                 $('.size_enter_btn').attr('id',btn_id)  //给尺码框确定按钮添加id为当前按钮的值
@@ -715,7 +725,7 @@
                             }else {
                                 for(i=0;i<=res.length-1;i++){
                                     // console.log(res[i][0],"*",res[i][1])
-                                    $('.size_check_view').append("<input class='input_check siz_existence "+res[i][0]+"' id='"+btn_id+"' type='checkbox' name='"+res[i][1]+"' value='"+res[i][0]+"'>"+"尺码:"+res[i][1]+",id（"+res[i][0]+")")
+                                    $('.size_check_view').append("<input class='input_check siz_existence "+res[i][0]+"' id='"+btn_id+"' type='checkbox' name='"+res[i][1]+"' value='"+res[i][0]+"'>id:（"+res[i][0]+"）")
                                 }
                                 //如果原来尺码选项已有数据，将原来数据恢复到复选框中
                                 // console.log('btn_id',btn_id)
