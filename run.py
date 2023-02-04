@@ -512,9 +512,18 @@ def add_user_goods_list():
     g_describe=request.form['goods_describe']
 
     add_user_goods_information(g_number,g_class,color_id,color_name,size_id,size_name,sale_price,shop_name,original_price,img_url,g_describe)
+    res=select_user_shop_goods_information(shop_name,g_number)
     # res=select_user_shop_goods_information()
     # print(g_number,g_class,color_id,color_name,size_id,size_name,sale_price,shop_name,original_price,img_url,g_describe)
-    return ''
+    datalist = []
+    if res:
+        for i in res:
+            newres = list(i)
+            datalist.append(newres)
+        # print('datalist:',datalist)
+        return datalist
+    else:
+        return ''
 
 #用户管理系统，删除用户商品信息表商品记录
 @app.route('/del_user_goods_list',methods=['get','post'])

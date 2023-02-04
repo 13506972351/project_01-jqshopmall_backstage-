@@ -105,7 +105,8 @@
 
                                     //调用查询用户商品信息选取记录函数
                                     var user_res=select_user_goods_list(shop_name,numbers)
-                                    // console.log('user_res:',user_res)
+
+                                    // console.log('******',numbers)
                                     //查询单款的色码
                                     $.ajax({
                                         type: 'post',
@@ -115,8 +116,8 @@
                                         },
                                         async:false,   //ajxa默认为异步执行，等待服务器返回值前会先执行其他代码，false设置为同步
                                         success:function (res1){
-
-                                            // console.log('res1[0][2]:',res1[0][2])
+                                            var config=true
+                                            // console.log('res1:',res1)
                                             // console.log('numbers2:',numbers)
                                             if(res1){
                                                 //将款号、商品分类、原价、商品描述添加到goods_number_frame的div中（添加data自定义属性）
@@ -125,7 +126,9 @@
                                                 $('.goods_list_frame').children('.'+numbers).find('.goods_class_content').html(res1[0][2])
                                                 $('.goods_list_frame').children('.'+numbers).find('.goods_oprice').html(res1[0][4])
 
-                                                for(i=0;i<=res1.length-1;i++) {
+                                                for(i=0;i<=res1.length-1;i++) {   //循环原始商品表中颜色条数
+
+                                                    // console.log('款号：',numbers,'颜色:',res1[i][6])
                                                     //添加颜色
                                                     $('.goods_list_frame').children('.'+numbers).children('.'+numbers).append("<div class='color_info_frame " + numbers + " ' name='" + res1[i][6] + "' id='" + res1[i][5] + "'>" +
                                                         "<div class='img_info_frame  small_unit_div_interval interval " + numbers + "'><img src='' alt='' class='" + res1[i][5] + " img_size'></div><div class='color_text small_unit_div_interval interval " + res1[i][5] + "'><label for='' class='" + res1[i][5] + "'>颜色：</label>" +
@@ -139,27 +142,35 @@
                                                     var sizeid_str = res1[i][7]   //尺码id符串
                                                     var newsizeid_str = sizeid_str.substring(0, sizeid_str.length - 1)//去除最后一下逗号字符
                                                     var sizeid_arr = newsizeid_str.split(',')  //以逗号为分割成数组
+                                                    // console.log(sizeid_arr[2])
                                                     // 添加尺码
                                                     for (j = 0; j <= sizeid_arr.length - 1; j++) {   //将尺码循环添加到元素中
-                                                        // console.log(j)
+                                                        // console.log('款号：',numbers,'颜色:',res1[i][6],'尺码：',sizeid_arr[j])
                                                         $('.goods_list_frame').children('.'+numbers).children('.'+numbers).children('.'+numbers).children('#' + res1[i][5]).append("<input type='checkbox' class='" + res1[i][5] + "  inp_sign  '  data-g_number='"+numbers+"' name='" + sizename_arr[j] + "' id='" + sizeid_arr[j] + "'   data-color_id='"+res1[i][5]+"'  data-color_name='"+res1[i][6]+"'   data-size_id='"+sizeid_arr[j]+"'  data-size_name='"+sizename_arr[j]+"'  data-imgurl='"+res1[i][9]+"'><label for=''  class='font_color'>" + sizename_arr[j] + "</label>")
                                                         //将用户商品管理表中已选有相同款号、颜色、尺码的复选框勾取
                                                         if(user_res){
                                                             // console.log(user_res.length)
-                                                            var config=true
+                                                            // var config=true
                                                             for(y=0;y<=user_res.length-1;y++){   //遍历记录条数
                                                                 if(user_res[y][3]==res1[i][5]){     //判断是否有相同颜色
-                                                                    var size_arry=user_res[y][5].split(',')    //将尺码分割成数组
-                                                                    if(config){   //当节流阀为t执行将用户售价填入价格框中，一次
+                                                                    var user_size_strs=user_res[y][5]   //取出用户商品信息表中尺码串
+                                                                    var user_size_newstr=user_size_strs.substring(0, user_size_strs.length - 1)//去除最后一下逗号字符
+
+                                                                    var user_size_arry=user_size_newstr.split(',')    //将用户商品表中的尺码分割成数组
+                                                                    // console.log('用户尺码数组：',user_size_arry)
+                                                                    if(config){   //当节流阀为t执行将用户售价填入价格框中，仅仅一次
                                                                         $('.goods_list_frame').children('.'+numbers).find('.shop_sale_inp').val(user_res[0][7])
                                                                         config=false
+                                                                        // console.log("&&&&")
                                                                     }
-                                                                    for(t=0;t<=size_arry.length-1;t++){       //遍历单个尺码id
-                                                                        if(size_arry[t]==sizeid_arr[j]){      //判断是否有相同尺码，有就复选框勾选
-                                                                            $('.goods_list_frame').children('.'+numbers).children('.'+numbers).children('.'+numbers).children('#' + res1[i][5]).children('input').prop('checked',true)
+                                                                    var s=0
+                                                                    for(t=0;t<=user_size_arry.length-1;t++){       //遍历单个尺码id
+                                                                        if(user_size_arry[t]==sizeid_arr[j]){      //判断是否有相同尺码，有就复选框勾选
+                                                                            $('.goods_list_frame').children('.'+numbers).children('.'+numbers).children('.'+numbers).children('#' + res1[i][5]).children('#'+user_size_arry[t]).prop('checked',true)
+                                                                            // console.log('款号：',numbers,'颜色：',res1[i][5],'尺码：',user_size_arry[t])
+                                                                            break
                                                                         }
                                                                     }
-
                                                                 }
                                                             }
                                                         }
@@ -182,10 +193,10 @@
                     all_choice()
                 }
             })
+            //点击尺码复选框，遍历所有复选框，如果所有复选框已勾选，全选复选框也自动勾选
             $('.goods_list_frame').on('click','.inp_sign',function (){
                 all_choice()
             })
-
 
             //封装/查询用户商品信息表，得到是否已经有选取记录
             function select_user_goods_list(shop_name,goods_number){
@@ -203,6 +214,7 @@
                             // console.log('res:',res)
                             configs=true  //记录用户商品信息表是否有记录，用作保存前删除原记录
                             ress=res
+                            // console.log('res:',res)
                         }
                     }
                 })
@@ -255,9 +267,12 @@
                     alert('请选取您有库存的商品或者将选取商品价格完善')
                 }else {
                     // console.log('ok')
+                    var s=0  //用于记录已经有选中尺码人颜色单元个数，用于控制回调次数阀门
+                    var t=0  //用于记录已经有选中尺码人颜色单元个数，用于控制回调次数阀门
                     //先循环单款号
 
                     $('.goods_list_frame').children('.goods_number_frame').each(function (e) {
+
                         //取出款号、商品分类、商品描述、原价、现价、店铺名
                         var shop_names=shop_name
                         var goods_name = $(this).data('g_name')
@@ -274,11 +289,13 @@
                             var size_idstr_arr=''
                             var size_namestr_arr=''
                             var config=false
-                            $(this).children('input').each(function (e){
+
+                            $(this).children('input').each(function (e){   //循环颜色单元下的尺码复选框
 
                                 var state=this.checked
                                 // console.log('s:',state)
                                 if(state){
+
                                     config=true
                                     var sizeid_str=$(this).data('size_id')
                                     var sizename_str=$(this).data('size_name')
@@ -288,6 +305,7 @@
                                 }
 
                             })
+
                             if(config){
                                 // console.log('*:',size_idstr_arr,size_namestr_arr)
                                 $.ajax({
@@ -308,8 +326,12 @@
 
                                     },
                                     async:false,   //ajxa默认为异步执行，等待服务器返回值前会先执行其他代码，false设置为同步
-                                    success:function (){
-
+                                    success:function (res){
+                                        if(res){
+                                            s=s+1
+                                        }else {
+                                            t=t+1
+                                        }
                                     }
                                 })
 
@@ -319,7 +341,13 @@
                         // console.log(goods_name,goods_class,goods_describe,goods_oprice,goods_saleprice)
 
                     })
-
+                    if(s==0 && t>0){
+                        alert('保存信息完全失败')
+                    }else if(s>0 && t>0){
+                        alert('部分信息保存失败，请检视')
+                    }else if(s>0 && t==0){
+                        alert('保存信息全部成功')
+                    }
                 }
 
             })
