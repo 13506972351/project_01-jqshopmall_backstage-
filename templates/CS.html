@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/js/jQuery.min.js"></script>
+    <script src="../static/js/ip_add.js"></script>
+</head>
+<style>
+/*    .a-upload {*/
+/*    padding: 4px 10px;*/
+/*    height: 20px;*/
+/*    line-height: 20px;*/
+/*    position: relative;*/
+/*    cursor: pointer;*/
+/*    color: #888;*/
+/*    background: #fafafa;*/
+/*    border: 1px solid #ddd;*/
+/*    border-radius: 4px;*/
+/*    overflow: hidden;*/
+/*    display: inline-block;*/
+/*    *display: inline;*/
+/*    *zoom: 1*/
+/*}*/
+
+/*.a-upload  input {*/
+/*    position: absolute;*/
+/*    font-size: 100px;*/
+/*    right: 0;*/
+/*    top: 0;*/
+/*    opacity: 0;*/
+/*    filter: alpha(opacity=0);*/
+/*    cursor: pointer*/
+/*}*/
+
+/*.a-upload:hover {*/
+/*    color: #444;*/
+/*    background: #eee;*/
+/*    border-color: #ccc;*/
+/*    text-decoration: none*/
+/*}*/
+
+/*.file {*/
+/*    position: relative;*/
+/*    display: inline-block;*/
+/*    background: #D0EEFF;*/
+/*    border: 1px solid #99D3F5;*/
+/*    border-radius: 4px;*/
+/*    padding: 4px 12px;*/
+/*    overflow: hidden;*/
+/*    color: #1E88C7;*/
+/*    text-decoration: none;*/
+/*    text-indent: 0;*/
+/*    line-height: 20px;*/
+/*}*/
+/*.file input {*/
+/*    position: absolute;*/
+/*    font-size: 100px;*/
+/*    right: 0;*/
+/*    top: 0;*/
+/*    opacity: 0;*/
+/*}*/
+/*.file:hover {*/
+/*    background: #AADFFD;*/
+/*    border-color: #78C3F3;*/
+/*    color: #004974;*/
+/*    text-decoration: none;*/
+/*}*/
+.fl{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid red;
+    text-align: center;
+}
+.one{
+    display: inline-block;/*宽度跟内容变化*/
+}
+.two{
+    display: flex;
+    flex-direction: column;
+}
+</style>
+<body>
+<!--var src_url=ipstr+"static/images/img_all/1.jpg"-->
+<!--<img src='' alt="">-->
+<!--<img src="" alt="">-->
+<!--&lt;!&ndash;    <div></div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="checkbox" class="inputs">&ndash;&gt;-->
+<!--<select name="" id="" class="selec">-->
+<!--    <option value="1">1</option>-->
+<!--    <option value="2">2</option>-->
+<!--    <option value="3">3</option>-->
+<!--</select>-->
+<!--<div><label for="">dd</label></div>-->
+<!--<button class="chang">change</button>-->
+<!--<button class="chang1">change1</button>-->
+<!--<input type="file" accept="image/png, image/jpeg, image/jpg">-->
+<!--<label for="" id="one" class="one" >aa</label>-->
+<!--<div id="one" class="one">cc</div>-->
+<!--<input type="text" id="one" value="bb">-->
+
+<!--<div class="fl">CD-->
+
+<!--</div>-->
+<!--<button class="chang_div">生成新div</button>-->
+<!--<button class="chang1_div">添加新属性</button>-->
+<!--<div class="fl">-->
+<!--    <div class="one">-->
+<!--        <label for="">你好</label>-->
+<!--    </div>-->
+<!--    <div class="two">-->
+<!--        <div><label for="">A</label></div>-->
+<!--        <div><label for="">B</label></div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<button onclick="fun"  >点击执行函数</button>-->
+<!--<input type="checkbox" class="inp">-->
+<!--<button onclick="fun" class="btn">点击执行函数</button>-->
+<input type="number" oninput="value=value.replace(/[^\d]/g,'')">
+<input type="number" >
+  <script>
+      // $('.two :nth-child(2):nth-child(1)').css("background-color","yellow")
+      // console.log(son2)
+      // $('.fl').append('<div><label for="">dd</label><label for="">cc</label></div>')
+      // $('.fl').append('<label for="" id="one" class="one" >aa</label>')
+      // $('.fl').append('<input type="text" id="one" value="bb">')
+      // var con=$('.fl').children().length
+      // console.log(con)
+      //
+      //
+      //   $('.chang_div').click(function (){
+      //       console.log(90)
+      //       $('.fl').append('<div class="new" data-name="AA" data-src="ddd" >我是新来的</div>')//自定义属性
+      //
+      //       var st=$('.new').data('name')    //获取自定义属性
+      //       console.log(st)
+      //
+      //   })
+      //   $('.chang1_div').click(function (){
+      //       $('.fl').children('.new').attr('data-id','a1')   //添加自定义属性
+      //       console.log('id:',$('.fl').data('id'))
+      //   })
+
+
+
+      //   var src_url=ipstr+"static/images/img_all/1.jpg"
+      // $('img').attr('src',src_url)
+      // var stt='one'
+      // // var st=$('div[class=stt]').html()
+      // var st=$('#'+stt).html()
+      // console.log(st)
+      //
+      // var selectstr=$('.selec').val()
+      //     console.log(selectstr)
+      //
+      // $('.selec').change(function (){
+      //     var selectstr=$(this).val()
+      //     console.log(selectstr)
+      // })
+      // var state=false
+      // $('.inp').change(function (){
+      //     var state=(this).checked
+      //     console.log(state)
+
+
+      // function fun(){
+      //     console.log(state)
+      // }
+      // fun()
+      // $('.btn').click(function (){
+      //     fun()
+      // })
+      // function funs(){
+      //         console.log(state)
+      // }
+          // var urlarr=urlstr.split('\\')
+          // // console.log(urlarr[(urlarr.length-1)])
+          // var newurl='static/images/img_all/'+urlarr[(urlarr.length-1)]
+          // // console.log(newurl)
+          // var imgurl=ipstr+newurl
+          // // console.log(imgurl)
+          // $('img').src=imgurl
+      // })
+      // console.log(ipstr)
+    // $('button').click(function (){
+    //     $('div').append('<input type="checkbox" class="inputs">')
+    // })
+    // $('div').on('change','input',function (){
+    //     var zt=this.checked
+    //     console.log(zt)
+    // })
+    // $('.chang').click(function (){
+    //     console.log('ok')
+    //     $('.inp').prop('checked',true)
+    //     console.log($('.inp').checked)
+    // })
+    //   $('.chang1').click(function (){
+    //     console.log('ok1')
+    //     $('.inp').prop('checked',false)
+    //       console.log($('.inp').checked)
+    //     // $('.inputs').checked=true
+    // })
+    // $('.inputs').change(function (){
+    //     console.log(this.checked)
+    // })
+
+
+
+    // var str=' dffef '
+    //   var nstr=str.replace(/\+/g,"")
+    //   console.log(str.length,nstr.length)
+    //   console.log(nstr)
+
+
+      // function get(a){
+      //       var sun=a+12
+      //       return sun
+      // }
+      //
+      // var ss=get(11111)
+      // console.log(ss)
+  </script>
+
+</body>
+</html>

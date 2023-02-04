@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户系统管理</title>
+    <script src="{{url_for('static',filename='js/jQuery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/ip_add.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/user.css')}}">
+</head>
+<body>
+    <div class="bgc_frame">
+        <div class="title">JQ商城(用户)后台管理系统<label class="shop_name"></label></label></div>
+        <hr>
+        <div class="nvg_frame">
+            <ul class="nvg">
+                <li class="shop_list"><a href="javascript:;" >商品管理</a></li>
+                <li class="goods_class"><a href="javascript:;">销售查询</a></li>
+            </ul>
+            <div class="btn1_frame"><button class="btn1">确认保存</button></div>
+        </div>
+
+        <hr>
+        <div class="content_frame" >
+            <div class="goods_list_frame son">
+            </div>
+            <div class="sale_list_frame son">22
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function (){    //主函数入口
+            //记录店铺名
+            var shop_name_str=location.search   //获取url？之后的字符串
+            const params=new URLSearchParams(shop_name_str)  //解析参数
+            const shop_name=params.get('user_parameter')
+
+            var configs=false  //记录用户商品信息表是否有记录，用作保存前删除原记录
+            //将网页标题加上店铺名
+            $('.shop_name').html('--('+shop_name+')')
+            //点击全选，下面尺码全部勾选
+            $('.goods_list_frame').on('click','.input_check' ,function (){  //隐式迭代绑每个复选框的选中及取消选中事件,注动态生成的元素事件必须用on指定事件子元素
+                var checkstr=this.checked
+                var gs_number=this.id
+                var inp=$('.goods_list_frame').children('.'+gs_number).find('.inp_sign').prop('checked',checkstr)
+                // console.log(inp)
+            })
+
+            //如果下面尺码复选框全部勾选，全选自动勾选
+            function all_choice(){
+                const one_div=$('.goods_list_frame').children()  //获取单款的div
+                one_div.each(function (){    //遍历单款的div
+                    var gs_name=$(this).data('g_name')     //当this作为元素时是加上$()  获取款号
+                    // console.log(this)
+                    var count=0
+                    // console.log(this)
+                    const two_div=$(this).find('.inp_sign')   //获取单款下所有尺码复选框
+                    two_div.each(function (){     //遍历单款下所有尺码复选框
+                        if(this.checked==true){   //如果复选框被选中计数加1
+                            count=count+1
+                        }
+                    })
+                    // console.log(gs_name)
+                    if(count==two_div.length){    //当被选中复选框的个数等于全部复选框时，将全选勾选
+                        $('.'+gs_name).find('.input_check').prop('checked',true)
+                    }else {
+                        $('.'+gs_name).find('.input_check').prop('checked',false)
+                    }
+                })
+            }
+            //导航栏点击事件绑定
+            $('.nvg li').click(function (){
+                var index=$(this).index()
+                // console.log(index)
+                $('.content_frame .son').eq(index).show()
+                $(this).css('background-color','grey' )  //改变背景色
+                $(this).children('a').css('color','white')  //改变字体颜色
+                $(this).siblings().css('background-color','')
+                $(this).siblings().children('a').css('color','blue')
+                $('.content_frame .son').eq(index).siblings().hide()
+
+                //当点击商品管理栏时，加载图片及商品信息
+                if(index==0){
+
+                    //查询所有款号唯一值
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'select_goods_number',   //查询所有款号唯一值
+                        data:{
+
+                        },
+                        async:false,   //ajxa默认为异步执行，等待服务器返回值前会先执行其他代码，false设置为同步
+                        success:function (res){
+                            // console.log(res)
+                            if(res=='B'){
+                                alert('没有商品信息，请先新增商品信息')
+                            }else {
+                                $('.goods_list_frame').html('')
+                                for(s=0;s<=res.length-1;s++){
+                                    var numbers=res[s].toString()  //将数组转化为字符
+
+                                    // console.log('numbers1:',numbers)
+                                    $('.goods_list_frame').append("<div class='goods_number_frame "+numbers+"' >  <div class='number_info_frame left_right_div_interval'> <div class='number small_unit_div_interval'><label for='' class='number_label1'>款号：</label>\n" +
+                                    " <label for='' class='number_label2  font_color'>"+numbers+"</label></div>   <div class='input1 small_unit_div_interval'><input type='checkbox' class='input_check' id='"+numbers+"'>\n" +
+                                    " <label for='' class='input1_label3 interval'>全选</label></div><div class='goods_infoframe small_unit_div_interval interval ' id='"+numbers+"'><label for='' class='pirce_label interval'>商品分类：</label><label for='' id='"+numbers+"' class='goods_class_content interval font_color'></label><label for=''  class='pirce_label interval goods_opirce_label'>原价：</label><label for='' id='"+numbers+"' class='goods_oprice pirce_label interval font_color'></label></div>   <div class='new_pirce small_unit_div_interval'><label for='' class='pirce_label'>售价：</label><input type='number' class='shop_sale_inp "+numbers+"' data-g_price_inp='"+numbers+"'  ></div>  </div>  <div class='text_info left_right_div_interval "+numbers+"  '  >   </div>")
+
+                                    //调用查询用户商品信息选取记录函数
+                                    var user_res=select_user_goods_list(shop_name,numbers)
+                                    // console.log('user_res:',user_res)
+                                    //查询单款的色码
+                                    $.ajax({
+                                        type: 'post',
+                                        url: ipstr+'select_goods_list',
+                                        data: {
+                                            goods_number:numbers
+                                        },
+                                        async:false,   //ajxa默认为异步执行，等待服务器返回值前会先执行其他代码，false设置为同步
+                                        success:function (res1){
+
+                                            // console.log('res1[0][2]:',res1[0][2])
+                                            // console.log('numbers2:',numbers)
+                                            if(res1){
+                                                //将款号、商品分类、原价、商品描述添加到goods_number_frame的div中（添加data自定义属性）
+                                                $('.goods_list_frame').children('.'+numbers).attr('data-g_name',res1[0][1]).attr('data-g_class',res1[0][2]).attr('data-g_describe',res1[0][3]).attr('data-g_oprice',res1[0][4])
+                                                //将商品分类、原价添加到标签中
+                                                $('.goods_list_frame').children('.'+numbers).find('.goods_class_content').html(res1[0][2])
+                                                $('.goods_list_frame').children('.'+numbers).find('.goods_oprice').html(res1[0][4])
+
+                                                for(i=0;i<=res1.length-1;i++) {
+                                                    //添加颜色
+                                                    $('.goods_list_frame').children('.'+numbers).children('.'+numbers).append("<div class='color_info_frame " + numbers + " ' name='" + res1[i][6] + "' id='" + res1[i][5] + "'>" +
+                                                        "<div class='img_info_frame  small_unit_div_interval interval " + numbers + "'><img src='' alt='' class='" + res1[i][5] + " img_size'></div><div class='color_text small_unit_div_interval interval " + res1[i][5] + "'><label for='' class='" + res1[i][5] + "'>颜色：</label>" +
+                                                        "<label for='' class='" + res1[i][5] + "   font_color'>" + res1[i][6] + "</label></div> <div class='size_text small_unit_div_interval interval " + res1[i][5] + "'    data-color_id='"+res1[i][5]+"'  data-color_name='"+res1[i][6]+"'      data-imgurl='"+res1[i][9]+"' name='" + res1[i][6] + "' id='" + res1[i][5] + "'><label for=''>尺码：</label></div>     </div>")
+                                                    $('.goods_list_frame').children('.'+numbers).children('.'+numbers).children('.'+numbers).children('.'+numbers ).children('.'+res1[i][5]).attr('src', ipstr + res1[i][9])  //将图片src设置
+
+
+                                                    var sizename_str = res1[i][8]  //尺码名字符串
+                                                    var newsizename_str = sizename_str.substring(0, sizename_str.length - 1)//去除最后一下逗号字符
+                                                    var sizename_arr = newsizename_str.split(',')  //以逗号为分割成数组
+                                                    var sizeid_str = res1[i][7]   //尺码id符串
+                                                    var newsizeid_str = sizeid_str.substring(0, sizeid_str.length - 1)//去除最后一下逗号字符
+                                                    var sizeid_arr = newsizeid_str.split(',')  //以逗号为分割成数组
+                                                    // 添加尺码
+                                                    for (j = 0; j <= sizeid_arr.length - 1; j++) {   //将尺码循环添加到元素中
+                                                        // console.log(j)
+                                                        $('.goods_list_frame').children('.'+numbers).children('.'+numbers).children('.'+numbers).children('#' + res1[i][5]).append("<input type='checkbox' class='" + res1[i][5] + "  inp_sign  '  data-g_number='"+numbers+"' name='" + sizename_arr[j] + "' id='" + sizeid_arr[j] + "'   data-color_id='"+res1[i][5]+"'  data-color_name='"+res1[i][6]+"'   data-size_id='"+sizeid_arr[j]+"'  data-size_name='"+sizename_arr[j]+"'  data-imgurl='"+res1[i][9]+"'><label for=''  class='font_color'>" + sizename_arr[j] + "</label>")
+                                                        //将用户商品管理表中已选有相同款号、颜色、尺码的复选框勾取
+                                                        if(user_res){
+                                                            // console.log(user_res.length)
+                                                            var config=true
+                                                            for(y=0;y<=user_res.length-1;y++){   //遍历记录条数
+                                                                if(user_res[y][3]==res1[i][5]){     //判断是否有相同颜色
+                                                                    var size_arry=user_res[y][5].split(',')    //将尺码分割成数组
+                                                                    if(config){   //当节流阀为t执行将用户售价填入价格框中，一次
+                                                                        $('.goods_list_frame').children('.'+numbers).find('.shop_sale_inp').val(user_res[0][7])
+                                                                        config=false
+                                                                    }
+                                                                    for(t=0;t<=size_arry.length-1;t++){       //遍历单个尺码id
+                                                                        if(size_arry[t]==sizeid_arr[j]){      //判断是否有相同尺码，有就复选框勾选
+                                                                            $('.goods_list_frame').children('.'+numbers).children('.'+numbers).children('.'+numbers).children('#' + res1[i][5]).children('input').prop('checked',true)
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    })
+
+                                }
+                            }
+                        }
+                    })
+                    //限制价格框只能输入数字
+                    function fun(){
+                        $('.shop_sale_inp').value=value.replace(/[^\d]/g,'')
+                    }
+                    //当尺码全部勾选时，执行全选复选框自动勾选函数
+                    all_choice()
+                }
+            })
+            $('.goods_list_frame').on('click','.inp_sign',function (){
+                all_choice()
+            })
+
+
+            //封装/查询用户商品信息表，得到是否已经有选取记录
+            function select_user_goods_list(shop_name,goods_number){
+                ress=[]    //由于本函数调用ajax所以回调函数中reture只会给本函数，不会返回给外部调用者，如以要在函数外层return
+                $.ajax({
+                    type:'post',
+                    url:ipstr+'select_user_goods_list',
+                    data:{
+                        user_shop_name:shop_name,
+                        goods_number:goods_number,
+                    },
+                    async:false,   //ajxa默认为异步执行，等待服务器返回值前会先执行其他代码，false设置为同步
+                    success:function (res){
+                        if(res){
+                            // console.log('res:',res)
+                            configs=true  //记录用户商品信息表是否有记录，用作保存前删除原记录
+                            ress=res
+                        }
+                    }
+                })
+                return ress
+            }
+            //点击保存按钮向数据库中添加选中商品记录
+            $('.btn1').click(function (){
+                //判断该用户是否有记录存在，有存在就全部删除
+                // console.log(configs)
+                if(configs){  //configs为true说明用户商品信息存在
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'del_user_goods_list',
+                        data:{
+                           user_shop_name:shop_name,
+                        },
+                        async:false,   //ajxa默认为异步执行，等待服务器返回值前会先执行其他代码，false设置为同步
+                        success:function (){
+
+                        }
+                    })
+                }
+
+                //判断是否有选中操作
+                var statepower=[]
+                var priceinput=[]
+                var count=$('.goods_list_frame  .inp_sign')   //选取后代所有元素，加>为所有子辈
+                count.each(function (e){    //遍历所有复选框判断是否存在未做任何选择
+
+                    var statestr=this.checked
+                    if(statestr==true){
+                        statepower.push(statestr)
+                        return false   //跳出each循环
+                    }
+                })
+                count.each(function (e){    ////遍历所有复选框判断是否存在已经选择但是未输入价格情况
+                    var goods_nb=$(this).data('g_number')
+                    var statestr=this.checked
+                    if(statestr){
+                        var inp_val=$('.goods_list_frame').children('.'+goods_nb ).find('.shop_sale_inp').val()
+                        if(!inp_val){
+                            priceinput.push(false)
+                            return false
+                        }
+                    }
+
+                })
+                // console.log(priceinput)
+                if(statepower=='' || priceinput!=''){     //复选框存在未做任何，或者选择复选框但是未输入价格情况提示
+                    alert('请选取您有库存的商品或者将选取商品价格完善')
+                }else {
+                    // console.log('ok')
+                    //先循环单款号
+
+                    $('.goods_list_frame').children('.goods_number_frame').each(function (e) {
+                        //取出款号、商品分类、商品描述、原价、现价、店铺名
+                        var shop_names=shop_name
+                        var goods_name = $(this).data('g_name')
+
+                        var goods_class=$(this).data('g_class')
+                        var goods_describe=$(this).data('g_describe')
+                        var goods_oprice=$(this).data('g_oprice')
+                        var goods_saleprice=$('.goods_list_frame').children('.'+goods_name).find('.shop_sale_inp').val()  //现价
+                        //循环尺码的父元素
+                        $('.goods_list_frame').children('.'+goods_name).find('.size_text').each(function (e){
+                            var color_idstr=$(this).data('color_id')
+                            var color_namestr=$(this).data('color_name')
+                            var img_urlstr=$(this).data('imgurl')
+                            var size_idstr_arr=''
+                            var size_namestr_arr=''
+                            var config=false
+                            $(this).children('input').each(function (e){
+
+                                var state=this.checked
+                                // console.log('s:',state)
+                                if(state){
+                                    config=true
+                                    var sizeid_str=$(this).data('size_id')
+                                    var sizename_str=$(this).data('size_name')
+                                    size_idstr_arr=size_idstr_arr+sizeid_str+','
+                                    size_namestr_arr=size_namestr_arr+sizename_str+','
+
+                                }
+
+                            })
+                            if(config){
+                                // console.log('*:',size_idstr_arr,size_namestr_arr)
+                                $.ajax({
+                                    type:'post',
+                                    url:ipstr+'add_user_goods_list',
+                                    data:{
+                                        goods_name:goods_name,
+                                        goods_class:goods_class,
+                                        color_id:color_idstr,
+                                        color_name:color_namestr,
+                                        size_id:size_idstr_arr,
+                                        size_name:size_namestr_arr,
+                                        sale_price:goods_saleprice,
+                                        shop_name:shop_names,
+                                        original_price:goods_oprice,
+                                        img_url:img_urlstr,
+                                        goods_describe:goods_describe,
+
+                                    },
+                                    async:false,   //ajxa默认为异步执行，等待服务器返回值前会先执行其他代码，false设置为同步
+                                    success:function (){
+
+                                    }
+                                })
+
+                            }
+                        })
+
+                        // console.log(goods_name,goods_class,goods_describe,goods_oprice,goods_saleprice)
+
+                    })
+
+                }
+
+            })
+        })
+    </script>
+</body>
+</html>

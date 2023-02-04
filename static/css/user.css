@@ -1,0 +1,100 @@
+.bgc_frame{
+        margin: 0 auto;
+        padding: 0 20px 0 20px;
+    }
+    .title{
+        font-size: 40px;
+
+    }
+    .shop_name{
+        color: blue;
+    }
+    .nvg{
+        display: flex;
+        flex-direction: row;
+        padding-left: 0;
+    }
+    .nvg_frame{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .btn1{
+        width: 80px;
+        height: 30px;
+        position: relative;
+        top: 16px;
+    }
+    a{
+        text-decoration: none;
+    }
+    .nvg li{
+        margin: 5px;
+        text-align: center;
+        list-style: none;
+    }
+    .goods_list_frame{
+        display: block;
+    }
+    .sale_list_frame{
+        display: none;
+    }
+    .goods_number_frame{
+        border: 1px solid #888888;
+        display: flex;
+        flex-direction: row;
+    }
+    .number_info_frame{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .shop_sale_inp{
+        width: 60px;
+        height: 20px;
+        line-height: 600%;
+        color: blue;
+    }
+    .pirce_label{
+        line-height: 600%;
+    }
+
+    .text_info{
+        display: flex;
+        flex-direction: column;
+    }
+    .color_info_frame{
+        display: flex;
+        flex-direction: row;
+    }
+    .number{
+        position: relative;
+    }
+    .number .number_label1,.number_label2{
+        line-height: 600%;
+    }
+
+    .input1 .input_check,.input1_label3{
+        line-height: 600%;
+    }
+    .font_color{
+       color: red;
+    }
+    .input1_label3{
+        color: blue;
+    }
+
+    .img_size{
+        width: 50px;
+        height: 50px;
+    }
+    /*间距*/
+    .left_right_div_interval{
+        margin-left: 2px;
+    }
+    .small_unit_div_interval{
+        margin-right: 4px;
+    }
+    .goods_opirce_label{
+        margin-left: 5px;
+    }

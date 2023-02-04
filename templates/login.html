@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jq商城后台管理系统登录</title>
+    <script src="{{url_for('static',filename='js/jQuery.min.js')}}"></script>
+</head>
+<style>
+.frame{
+    margin: 20px 40% 0 40%;
+
+}
+.user,.pass{
+    padding: 0 0 10px 0;
+}
+</style>
+<body>
+    <div>
+        <div>
+            <h1>jq商城登陆</h1>
+        </div>
+        <hr>
+        <form action="" class="frame" method="post"  >
+            <div class="user">
+                <label for="">请输入用户名：</label>
+                <input name="user" type="text"  id="username"  value="">
+<!--                name的值不能与id值重复-->
+            </div>
+            <div class="pass">
+                <label for="password">请输入密码：</label>
+                <input name="pass" type="password"  id="password"  value="">
+            </div>
+            <button type="submit" >确认发送</button>
+        </form>
+    </div>
+    <script>
+
+    </script>
+</body>
+</html>

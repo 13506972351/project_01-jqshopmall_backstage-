@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>系统管理</title>
+    <script src="{{url_for('static',filename='js/jQuery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/ip_add.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/sys.css')}}">
+</head>
+
+<body >
+    <div class="bgc_frame">
+        <div class="title">JQ商城后台管理系统</div>
+        <hr>
+        <ul class="nvg">
+            <li class="shop_list"><a href="javascript:;" >店铺管理</a></li>
+            <li class="goods_class"><a href="javascript:;">商品分类管理</a></li>
+            <li class="color_edit"><a href="javascript:;">颜色管理</a></li>
+            <li class="size_edit"><a href="javascript:;">尺码管理</a></li>
+            <li class="goods_edit"><a href="javascript:;">商品管理</a></li>
+        </ul>
+        <hr>
+        <div class="content_frame" >
+            <div class="shop_list_frame son">
+                <div class="operation_region" >
+                    <div class="shop_input_frame">
+                        <labeel>省份：</labeel>
+                        <input type="text" class="province shop_list" name="province">
+                        <labeel>地级市：</labeel>
+                        <input type="text" class="state shop_list" name="state">
+                        <labeel>县：</labeel>
+                        <input type="text" class="county shop_list" name="county">
+                        <labeel>店铺名：</labeel>
+                        <input type="text" class="shopname shop_list" name="shopname" placeholder="请输入待查询/删除店铺名">
+                        <labeel>经营者：</labeel>
+                        <input type="text" class="master shop_list" name="master">
+                        <labeel>联系电话：</labeel>
+                        <input type="number" class="telep shop_list" name="telep">
+                        <labeel>登录密码：</labeel>
+                        <input type="text" class="pass shop_list" name="pass">
+                    </div>
+                    <div class="but">
+                        <button class="select_but">查询</button>
+                        <button class="add_but">新增</button>
+                        <button class="del_but">删除</button>
+                    </div>
+                </div>
+                <div class="display_region">
+                    <table class="shop_list_table_frame" >
+                        <caption class="title_text">店铺信息列表</caption>
+                        <thead class="shop_list_thead">
+                            <tr>
+                                <th>id</th>
+                                <th>店铺名</th>
+                                <th>店铺经营者</th>
+                                <th>省份</th>
+                                <th>地级市</th>
+                                <th>县</th>
+                                <th>后台密码</th>
+                                <th>联系电话</th>
+                            </tr>
+                        </thead>
+                        <tbody class="shop_list_tbody">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="goods_class_frame son" style="display: none">
+                <div class="goodsclass_operation_region" >
+                        <div class="goods_input_frame">
+                            <label for="" class="class_label good">商品分类名称：</label>
+                            <input type="text" class="class_frame good" name="class_text" placeholder="请输入待新增/查询/删除商品分类">
+                            <div class="goods_btn">
+                                <button type="submit" class="add_click">添加分类</button>
+                                <button type="submit" class="select_click">查询分类</button>
+                                <button type="submit" class="del_click">删除分类</button>
+                            </div>
+                        </div>
+                </div>
+                <div class="goodsclass_display_region" >
+                    <table class="goods-table_frame">
+                        <caption class="title_text">商品分类表</caption>
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>分类名称</th>
+                            </tr>
+                        </thead>
+                        <tbody class="goods_class_tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="color_edit_frame son" style="display: none">
+                <div class="color_operation_region" >
+                        <div class="color_input_frame">
+                            <label for="" class="color_label col">颜色名称：</label>
+                            <input type="text" class="color_frame col" name="color_text" placeholder="请输入待查询颜色">
+                            <label for="" class="colorid_label col">颜色ID：</label>
+                            <input type="text" class="colorid_frame col" name="colorid_text" placeholder="请输入待新增/删除颜色">
+                            <div class="color_btn_frames">
+                                <button type="submit" class="add_color_click">添加颜色</button>
+                                <button type="submit" class="select_color_click">查询颜色</button>
+                                <button type="submit" class="del_color_click">删除颜色</button>
+                            </div>
+
+
+                        </div>
+
+                </div>
+                <div class="color_display_region" >
+                    <table class="color-table_frame">
+                        <caption class="title_text">颜色表</caption>
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>颜色名称</th>
+                                <th>颜色ID</th>
+                            </tr>
+                        </thead>
+                        <tbody class="color_tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="size_edit_frame son" style="display: none">
+                <div class="size_operation_region" >
+                        <div class="size_input_frame">
+                            <label for="" class="size_label siz">尺码名称：</label>
+                            <input type="text" class="size_frame siz" name="size_text" placeholder="请输入待查询尺码">
+                            <label for="" class="sizeid_label siz">尺码ID：</label>
+                            <input type="text" class="sizeid_frame siz" name="sizeid_text" placeholder="请输入待新增/删除尺码ID">
+                            <div class="size_btn">
+                                <button type="submit" class="add_size_click">添加尺码</button>
+                                <button type="submit" class="select_size_click">查询尺码</button>
+                                <button type="submit" class="del_size_click">删除尺码</button>
+                            </div>
+                        </div>
+                </div>
+                <div class="size_display_region" >
+                    <table class="size-table_frame">
+                        <caption class="title_text">尺码表</caption>
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>尺码名称</th>
+                                <th>尺码ID</th>
+                            </tr>
+                        </thead>
+                        <tbody class="size_tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="goods_edit_frame son" style="display: none">
+                <div class="goods_information_operation_region">
+                    <div class="goods_inf_input_frame">
+                        <div class="no_1">
+                            <div class="number ">
+                                <label for="" class="goodsinf number_lab" >商品款号</label>
+                                <input type="text" class="goodsinf number_inp goodsnumber" placeholder="请输入待查询款号">
+                            </div>
+                            <div class="number long ">
+                                <label for="" class="goodsinf">商品描述</label>
+                                <input type="text" class="goodsinf goods_describe">
+                            </div>
+                            <div class="number ">
+                                <label for="" class="goodsinf">商品原价</label>
+                                <input type="number" class="goodsinf original_Price">
+                            </div>
+                            <div class="number long_select ">
+                                <label for="" class="goodsinf">商品分类</label>
+                                <select name="" id="" class="select_frame">
+                                </select>
+                            </div>
+                            <div class="number ">
+                                <label for="" class="goodsinf">商品状态</label>
+                                <input type="checkbox" class="goodsinf check1" >
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="no_3">
+                            <div class="number long_lab ">
+                                <div class="add_color_btn">
+                                    <label for="" class="goodsinf">选择颜色</label>
+                                    <button class="select_btn color_btn ">....</button>
+<!--                                    <button>红色11</button>-->
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="no_4">
+                            <div class="goods_inf_btn">
+                                <button type="submit" class="select_goodsinf_click">查询</button>
+                                <button class="add_goodsinf_click">新增</button>
+                                <button class="modify_goodsinf_click">修改</button>
+                                <button class="del_goodsinf_click">删除</button>
+                             </div>
+                        </div>
+                    </div>
+                        <hr>
+
+                </div>
+                <div class="goods_information_display_region">
+                    <table class="goods_information-table_frame">
+                        <caption class="title_text">商品信息表</caption>
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>商品款号</th>
+                                <th>商品分类</th>
+                                <th>商品描述</th>
+                                <th>商品原价</th>
+                                <th>颜色ID</th>
+                                <th>颜色名称</th>
+                                <th>尺码ID</th>
+                                <th>尺码名称</th>
+                                <th>图片地址</th>
+                                <th>商品状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="goods_information_tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!--    选择颜色弹出对话框-->
+    <div class="eject_color_selectframe">
+        <div class="color_search_frame">
+            <label for="">搜索颜色</label>
+            <input type="text" placeholder="请输入待搜索颜色名称" class="select_color_item">
+            <div class="search_icon_frame"><img src='' alt="" class="search_icon"></div>
+        </div>
+        <hr>
+        <div class="color_check_frame">
+
+        </div>
+        <hr>
+        <div class="color_Selected">
+
+        </div>
+        <hr>
+        <button class="color_enter_btn">确定/关闭</button>
+
+    </div>
+<!--    选择尺码对话框-->
+    <div class="size_eject_frame">
+        <hr>
+        <div class="size_check_view">
+
+        </div>
+        <hr>
+        <button class="size_enter_btn">确定</button>
+        <button class="size_esc_btn">取消</button>
+    </div>
+    <script>
+        $(function (){   //入口函数
+            //显示在table函数 第二个参数为tbody的类名
+            function display_table (sql_str,document_class){
+                var tbod=document.querySelector(document_class);
+                tbod.innerHTML='';
+                // console.log('sql_str:',sql_str)
+                sql_str.forEach(function(val,index,daarr){
+                        // console.log('val',val);
+                        var tr=document.createElement('tr');  //根据数组中对象的个数创建行
+                        // console.log('val',val.length)
+                        for(k in val){    //遍历每个对象的元素
+                            // console.log('k:',k)
+                            tr.innerHTML=tr.innerHTML+'<td>'+ val[k]+'</td>'  //将对象中的元素值拼接成字符串
+                        }
+                        tbod.appendChild(tr)
+                    })
+            }
+            // 给导航栏循环绑定点击事件
+            $('.nvg li').click(function (){
+                var index=$(this).index()
+                // console.log(index)
+                $('.content_frame .son').eq(index).show()
+                $(this).css('background-color','grey' )  //改变背景色
+                $(this).children('a').css('color','white')  //改变字体颜色
+                $(this).siblings().css('background-color','')
+                $(this).siblings().children('a').css('color','blue')
+                $('.content_frame .son').eq(index).siblings().hide()
+
+                //当点击商品信息栏时，加载分类、颜色、尺码等信息、默认商品状态为true
+                if(index==4){
+                    // console.log(11)
+                    $('.check1').prop('checked',true)   //商品状态为true
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'load_goodsclass',
+                        data:{
+
+                        },
+                        success:function (res){
+                            if(res=='B'){
+                                alert('没有商品分类信息，请先新增商品分类信息')
+                            }else {
+                                for(i=0;i<=res.length;i++){
+                                    $('.select_frame').append("<option value='"+res[i]+"'>"+res[i]+"</option>")
+                                    select_val=$('.select_frame').val()
+                                }
+
+                            }
+                        }
+                    })
+                }
+
+            })
+            //新增店铺列表
+            $('.add_but').click(function (){
+                var s=''
+                var str=[]
+                $('.shop_input_frame> .shop_list').each(function (index,e){  //遍历子元素input
+                    // console.log('e:',e)
+                    str.push(this.value)
+                    if (this.value==''){
+                        s=s+'False'
+                    }
+                })
+                console.log('str:',str)
+                // console.log('s:',s)
+                if(!s){
+
+                    $.ajax({
+                        type:'post',
+                        // method: 'POST',
+                        url:ipstr+'add_content',
+
+                        data:{
+                            province_str:str[0],
+                            state_str:str[1],
+                            county_str:str[2],
+                            shopname_str:str[3],
+                            master_str:str[4],
+                            telep_str:str[5],
+                            pass_str:str[6],
+                            // sql_str:'select * from shopname_list where shop_name='+'"'+select_str+'"'+';'
+                         },
+                        success:function(res){
+                            // console.log('回调函数结果：',res)
+                            if(res!=='T'){
+                                // display_shopname_list (res)
+                                display_table (res,'.shop_list_tbody')
+                            }else if (res=='T') {
+                                alert('要新增的店铺名已经存在，不得重复新增')
+                            }else {
+                                alert('新增的店铺不成功')
+                            }
+
+                        },
+                    })
+                }else {
+                    alert('请将信息填写完整！')
+                    // console.log('请将信息填写完整！')
+                }
+            })
+            //查询店铺列表
+            $('.select_but').click(function (){
+                var shopname_str=$('.shopname').val()
+                // console.log(shopname_str)
+                if(shopname_str){
+                    $.ajax({
+                        type:'POST',
+                        url:ipstr+'select_content',
+
+                        data:{
+                            shopname_str:shopname_str,
+                         },
+                        success:function(res){
+                            // console.log('回调函数结果：',res)
+                            if(res!=='T'){
+                                display_table(res,'.shop_list_tbody')
+                            }else {alert('没有相应记录')}
+
+                        },
+                    })
+                }else {
+                    alert('请填写待查询店铺名称！')
+
+                }
+            })
+            //删除店铺列表
+            $('.del_but').click(function (){
+                var shopname_str=$('.shopname').val()
+                // console.log(shopname_str)
+                if(shopname_str){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'del_content',
+
+                        data:{
+                            shopname_str:shopname_str,
+                         },
+                        success:function(res){
+                            // console.log('回调函数结果：',res)
+                            if(res=='T'){
+                                alert('删除记录成功')
+
+                            }else if(res=='F'){
+                                alert('没有相应记录')
+                            } else {alert('删除记录不成功')
+                            }
+                        },
+                    })
+                }else {
+                    alert('请填写待删除店铺名称！')
+                    // console.log('请填写待查询店铺名称！')
+                }
+            })
+            //添加商品分类
+            $('.add_click').click(function (){
+                var class_name=($('.class_frame').val())
+                if(class_name){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'add_goods_class',
+                        data:{
+                            class_name:class_name
+                        },
+                        success:function (res){
+                            // console.log('res添加商品分类：',res)
+                            if(res=='B'){
+                                alert('添加商品分类失败')
+                            }else if(res=='T'){
+                                alert('要添加的商品分类已经存在')
+                            }else {
+                                display_table (res,'.goods_class_tbody')
+                            }
+                        }
+                    })
+
+                }else {alert('请将信息填写完整！')}
+                // document.goods_class_form.action='http://192.168.3.15:5000/add_goods_class'
+
+
+
+            })
+            //查询商品分类
+            $('.select_click').click(function (){
+                var goods_class_str=$('.class_frame').val()
+                // console.log(shopname_str)
+                if(goods_class_str){
+                    $.ajax({
+                        type:'POST',
+                        url:ipstr+'select_goods_class',
+
+                        data:{
+                            select_str:goods_class_str,
+                         },
+                        success:function(res){
+                            // console.log('回调函数结果：',res)
+                            if(res=='B'){
+                                alert('没有相应记录')
+                            }else {
+                                display_table(res,'.goods_class_tbody')
+                            }
+
+                        },
+                    })
+                }else {
+                    alert('请填写待查询分类名称！')
+
+                }
+            })
+            //删除商品分类
+            $('.del_click').click(function (){
+                var del_str=$('.class_frame').val()
+                // console.log(shopname_str)
+                if(del_str){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'del_goods_class',
+
+                        data:{
+                            del_str:del_str,
+                         },
+                        success:function(res){
+                            // console.log('回调函数结果：',res)
+                            if(res=='T'){
+                                alert('删除记录成功')
+                            }else if(res=='F'){
+                                alert('没有相应记录')
+                            } else {alert('删除记录不成功')
+                            }
+                        },
+                    })
+                }else {
+                    alert('请填写待删除商品分类名称！')
+                    // console.log('请填写待查询店铺名称！')
+                }
+            })
+            //添加颜色
+            $('.add_color_click').click(function (){
+
+                var color_name=($('.color_frame').val())
+                var color_id=($('.colorid_frame').val())
+                if(color_name && color_id){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'add_color',
+                        data:{
+                            color_name:color_name,
+                            color_id:color_id
+                        },
+                        success:function (res){
+                            // console.log('res添加商品分类：',res)
+                            if(res=='B'){
+                                alert('添加颜色失败')
+                            }else if(res=='T'){
+                                alert('要添加的颜色ID已经存在')
+                            }else {
+                                display_table (res,'.color_tbody')
+                            }
+                        }
+                    })
+                }else {alert('请将信息填写完整！')}
+
+            })
+            //查询颜色
+            $('.select_color_click').click(function (){
+                var color_name=($('.color_frame').val())
+                if(color_name){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'select_color',
+                        data:{
+                            color_name:color_name,
+                        },
+                        success:function (res){
+                            // console.log('res添加商品分类：',res)
+                            if(res=='B'){
+                                alert('没有相应的颜色')
+                            }else {
+                                display_table (res,'.color_tbody')
+                            }
+                        }
+                    })
+                }else {alert('请将信息填写完整！')}
+
+            })
+            //删除颜色
+            $('.del_color_click').click(function (){
+
+                var color_id=($('.colorid_frame').val())
+                if(color_id){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'del_color',
+                        data:{
+                            color_id:color_id
+                        },
+                        success:function (res){
+                            // console.log('res添加商品分类：',res)
+                            if(res=='T'){
+                                alert('删除颜色成功')
+                            }else if(res=='F'){
+                                alert('没有相应记录')
+                            } else {alert('删除颜色不成功')
+                            }
+                        }
+                    })
+                }else {alert('请将信息填写完整！')}
+
+            })
+            //添加尺码
+            $('.add_size_click').click(function (){
+                var size_name=($('.size_frame').val())
+                var size_id=($('.sizeid_frame').val())
+                if(size_name && size_id){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'add_size',
+                        data:{
+                            size_name:size_name,
+                            size_id:size_id
+                        },
+                        success:function (res){
+                            // console.log('res添加商品分类：',res)
+                            if(res=='B'){
+                                alert('添加尺码失败')
+                            }else if(res=='T'){
+                                alert('要添加的尺码ID已经存在')
+                            }else {
+                                display_table (res,'.size_tbody')
+                            }
+                        }
+                    })
+                }else {alert('请将信息填写完整！')}
+
+            })
+            //查询尺码
+            $('.select_size_click').click(function (){
+                var size_name=($('.size_frame').val())
+                if(size_name){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'select_size',
+                        data:{
+                            size_names:size_name,
+                        },
+                        success:function (res){
+                            // console.log('res添加商品分类：',res)
+                            if(res=='B'){
+                                alert('没有相应的颜色')
+                            }else {
+                                display_table (res,'.size_tbody')
+                            }
+                        }
+                    })
+                }else {alert('请将信息填写完整！')}
+
+            })
+            //删除尺码
+            $('.del_size_click').click(function (){
+
+                var size_id=($('.sizeid_frame').val())
+                if(size_id){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'del_size',
+                        data:{
+                            size_id:size_id
+                        },
+                        success:function (res){
+                            // console.log('res添加商品分类：',res)
+                            if(res=='T'){
+                                alert('删除颜色成功')
+                            }else if(res=='F'){
+                                alert('没有相应记录')
+                            } else {alert('删除颜色不成功')
+                            }
+                        }
+                    })
+                }else {alert('请将信息填写完整！')}
+
+            })
+            // （一级页面上/开）点击“选择颜色”按钮弹出框、加载颜色复选框//+点击查询颜色//
+            $('.color_btn').click(function (){
+                // console.log(999)
+                $('.eject_color_selectframe').show()  //弹出框、加载颜色复选框
+            })
+            // 点击“查询”后加载颜色复选框
+            $('.search_icon').click(function (){
+                    var color_select_str=$('.select_color_item').val()   //查询框内查询值
+                    if(color_select_str){
+                        $.ajax({
+                            type:'post',
+                            url:ipstr+'select_color',
+                            data:{
+                            color_name:color_select_str,
+                            },
+                            success:function (res){
+                                // console.log(res)
+                             if(res=='B'){
+                                        alert('没有该颜色信息，请先新增颜色信息')
+                                        $('.select_color_item').val('')
+                                }else {
+                                  for(i=0;i<=res.length-1;i++){
+                                     // console.log(res[i][0],"*",res[i][1])
+                                     $('.color_check_frame').append("<input  class='input_check  col_existence' type='checkbox' name='"+res[i][1]+"' value='"+res[i][2]+"'>"+"颜色:"+res[i][1]+"，id（"+res[i][2]+")")
+                                    }
+                                 $('.select_color_item').val('')
+                             }
+                        }
+
+                    })
+                    }else {
+                        alert('请输入待查询颜色名称！')
+                    }
+                })
+            //设置搜索颜色小图标src
+            var icon_src=ipstr+"static/icon/suosuo.png"
+            $('.search_icon').attr('src',icon_src)
+            //（二级页面上）当选中颜色复选框时，下面列出被选中颜色名称
+            $('.color_check_frame').on('click','.input_check',function (){  //隐式迭代绑每个复选框的选中及取消选中事件,注动态生成的元素事件必须用on指定事件子元素
+
+                var dataid=this.value
+                if(this.checked){  //如果被选中值为true
+                     $('.color_Selected').append("<div  class='color_classification "+this.value+"'><label for='' class='colorname_str'>"+this.name+"</label><label for='' class='colorid_str'>("+this.value+")</label><button class='select_size_btn ' id='"+this.value+"'>选择尺码</button><label class='size_view sizename_str' for='' ></label><label for='' class='size_idz_hide sizeid_str'></label><input type='file' class='select_url_frame  ' id='"+this.value+"' accept=‘image/png,image/jpeg,image/jpg’ value='选择图片'  ><label class='img_url'  for=''></label><div class='imgs_frame'><img class='img_url_view'  src='' alt=''></div></div>")
+                 }else {       //如果被取消选中值为false，删除颜色项目
+                    // console.log(dataid)
+                    $('.color_Selected').children('.'+dataid).remove()  //变量作为选择器时写法'.'+变量
+                }
+            })
+            // （二级页面上、弹出三级页面）点击（选择尺码）按钮、弹加载尺码复选框
+            $('.color_Selected').on('click','.select_size_btn',function (){   //如果父子都是动态生成的元素，父元素用再上一级
+
+                var btn_id=this.id   //将选择尺码按钮的id值取出
+                // console.log('btn_id:',btn_id)
+                $('.size_enter_btn').attr('id',btn_id)  //给尺码框确定按钮添加id为当前按钮的值
+                $('.size_check_view').html('')  //弹出尺码窗口时将上次复选框值清空
+                $('.size_eject_frame').show()  //弹出框、加载尺码复选框
+                // 加载尺码复选框
+                // console.log($('.size_chack_frame >.siz_existence').length)
+                if($('.size_check_view >.siz_existence').length<=0){   //加载过一次,颜色复选框已经存在不在重复加载
+                   $.ajax({
+                        type:'post',
+                        url:ipstr+'load_size',     //ip地址用全局变量
+                        // url:'http://192.168.3.15:5000/load_size',
+                        data:{},
+                        success:function (res){
+                            // console.log(res)
+                            if(res=='B'){
+                                    alert('没有尺码信息，请先新增尺码信息')
+                            }else {
+                                for(i=0;i<=res.length-1;i++){
+                                    // console.log(res[i][0],"*",res[i][1])
+                                    $('.size_check_view').append("<input class='input_check siz_existence "+res[i][0]+"' id='"+btn_id+"' type='checkbox' name='"+res[i][1]+"' value='"+res[i][0]+"'>"+"尺码:"+res[i][1]+",id（"+res[i][0]+")")
+                                }
+                                //如果原来尺码选项已有数据，将原来数据恢复到复选框中
+                                // console.log('btn_id',btn_id)
+                                var htmls=$('.color_Selected').children('.'+btn_id).children('.size_idz_hide').html()  //获取上次已选中的尺码id
+                                // console.log('htmls',htmls)
+                                if(htmls){    //如果尺码id存在
+                                    var htmls_str=htmls.substring(0,htmls.length-1)  //去除最后一下逗号字符
+                                    var htmls_arr=htmls_str.split(',')    //以逗号为分割成数组
+                                    // console.log(htmls_arr)
+                                    //遍历已有id及所有尺码复选框
+                                    var input_selectarr= $('.size_check_view').children('.siz_existence') //获得所有复选框数组
+                                    // console.log(input_selectarr)
+                                    for(i=0;i<=htmls_arr.length-1;i++){
+                                        for(j=0;j<=input_selectarr.length-1;j++){
+                                            if(input_selectarr[j].value==htmls_arr[i]){
+                                                var class_str=input_selectarr[j].value
+                                                $('.'+class_str).prop('checked',true)   //复选框值等于true
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                            }
+                        }
+                   })
+                }
+            })
+            //（三级页面上、回二级页面）选择尺码复选框后（确认）按钮保存信息并关闭弹窗
+            $('.size_enter_btn').click(function (){
+                // console.log(9999)
+                var strid=''
+                var strname=''
+                var daid=this.id
+                // console.log('daid',daid)
+                $('.size_check_view> .siz_existence').each(function (index,e){  //遍历子元素input
+                    if(this.checked){
+                        strid=strid+this.value+','  //将不为空的id值拼在一起
+                        strname=strname+this.name+','  //将不为空的尺码名值拼在一起
+                    }
+                })
+                $('.color_Selected').children('.'+daid).children('.size_view').html(strname)
+                $('.color_Selected').children('.'+daid).children('.size_idz_hide').html(strid)
+
+                $('.size_eject_frame').hide()   //关闭窗口
+            })
+            //（三级页面上、回二级页面）选择尺码按钮弹出框取消按钮关闭弹窗
+            $('.size_esc_btn').click(function (){
+                 $('.size_eject_frame').hide()
+            })
+            //点击选择图片获取图片的url
+            $('.color_Selected').on('change','.select_url_frame',function (){
+                var input_file_id=$(this).attr('id');  //获取按钮id值
+                // console.log(input_file_id)
+                const file_url=$(this).val()         //获取文件名路径
+                const file_arr=file_url.split('\\')   //分割文件名路径
+                const file_names=file_arr[file_arr.length-1]   //取出文件名
+                const file_urladd='static/images/img_all/'+file_names  //拼接地址(由于ip地址会变动不加入)
+                $('.color_Selected').children('.'+input_file_id).children('.img_url').html(file_urladd)
+                $('.color_Selected').children('.'+input_file_id).children('.imgs_frame').children('.img_url_view').attr('src',file_urladd)
+                // console.log(file_urladd)
+            })
+            //（二级页面上、回一级页面）完成选择尺码复选框、图片url后点击确认按钮保存信息并关闭弹窗回到一级页面
+            $('.color_enter_btn').click(function (){
+                // console.log(4000)
+                //如果尺码图片已经选择，按钮变红
+                var size_centent=$('.color_Selected').children('.color_classification').children('.size_view').html()  //获取已经选择尺码值
+                var imgurl_centent=$('.color_Selected').children('.color_classification').children('.imgs_frame').children('.img_url_view').attr('src')   //获取img的src
+                if(size_centent && imgurl_centent){
+                    $('.select_btn').css('background-color','red')
+                    // console.log(size_centent,imgurl_centent)
+                }else {
+                    $('.select_btn').css('background-color','')
+                }
+                $('.eject_color_selectframe').hide()   //关闭窗口
+            })
+            //商品管理页面，选择商品分类change事件，得到所选择的分类值
+            $('.select_frame').change(function (){
+                select_val=$(this).val()
+            })
+            //把新增商品包装成函数
+            function add_goods(){
+                const goods_number=$('.goodsnumber').val()  //款号
+                const goods_describe=$('.goods_describe').val()  //商品描述
+                const original_Price=$('.original_Price').val()  //原价
+                const size_centent=$('.color_Selected').children('.color_classification').children('.size_view').html()  //获取已经选择尺码值
+                const imgurl_centent=$('.color_Selected').children('.color_classification').children('.imgs_frame').children('.img_url_view').attr('src')   //获取img的src
+                //为了防止添加到数据库中的记录不完整，检查每条颜色下尺码是否已经添加
+                var config=true
+                var color_son_arry=$('.color_Selected').children()   //获取所有颜色元素数组
+                color_son_arry.each(function (index,e){      //遍历生成的元素数组,检查是否都有添加尺码信息
+                    const size_str=$(this).find('.sizename_str').html()  //尺码名
+                    if(!size_str){      //如果有一条颜色下尺码为空
+                        config=false
+                    }
+                    const url_str=$(this).find('.img_url').html()   //图片地址
+                    if(!url_str){       //如果有一条颜色下图片地址为空
+                        config=false
+                    }
+                })
+                // console.log(config)
+                if(goods_number&&goods_describe&&original_Price&&size_centent&&imgurl_centent&&select_val&&config){  //如果资料齐全(select_val为商品分类值）
+                    var color_son_arr=$('.color_Selected').children()   //获取所有颜色元素数组
+                    // var color_count=$('.color_Selected').children().length  //颜色的数量，以此作为循环次数
+                    color_son_arr.each(function (index,e){      //遍历生成的颜色元素
+
+                        const colorname_str=$(this).find('.colorname_str').html()  //颜色名
+                        const colorid_str=$(this).find('.colorid_str').html().slice(1)  //颜色id(去除首字符左括号)
+                        const newcolorid_str=colorid_str.substring(0,colorid_str.length-1)  //去除尾字符右括号
+                        const sizename_str=$(this).find('.sizename_str').html()  //尺码名
+                        // console.log('sizename_str:',sizename_str)
+                        // const newsizename_str=sizename_str.substring(0,sizename_str.length-1)//尺码名（去除尾字符逗号）
+                        const sizeid_str=$(this).find('.sizeid_str').html()   //尺码id
+                        // console.log('sizeid_str:',sizeid_str)
+                        // const newsizeid_str=sizeid_str.substring(0,sizeid_str.length-1)//尺码id（去除尾字符逗号）
+                        const img_url_str=$(this).find('.img_url').html()   //图片地址
+                        // console.log(colorname_str,newcolorid_str,newsizename_str,newsizeid_str,img_url_str)
+                        $.ajax({
+                            type:'post',
+                            url:ipstr+'add_goods_list',
+                            data:{
+                                goods_number:goods_number,
+                                goods_describe:goods_describe,
+                                original_Price:original_Price,
+                                goods_class:select_val,
+                                colorname_str:colorname_str,
+                                colorid_str:newcolorid_str,
+                                // sizename_str:newsizename_str,
+                                sizename_str:sizename_str,
+                                // sizeid_str:newsizeid_str,
+                                sizeid_str:sizeid_str,
+                                img_url:img_url_str,
+                                goods_state:1
+                            },
+                            success:function (res){
+                                // console.log('res添加商品分类：',res)
+                                if(res=='B'){
+                                    alert('新增商品信息失败')
+                                }else if(res=='R'){
+                                    alert('已有相同款号和颜色id，不得重复添加')
+                                }else {
+                                    display_table (res,'.goods_information_tbody')
+                                    //记录添加完成，清空录入框
+                                    $('.goodsnumber').val('')  //款号
+                                    $('.goods_describe').val('')  //商品描述
+                                    $('.original_Price').val('')  //原价
+                                    $('.color_Selected').html('')//清空所有颜色、尺码元素
+                                    $('.color_check_frame').html('')  //清空所有颜色复选框
+                                }
+                            }
+                        })
+                    })
+                }else {
+                    alert('请将资料填写完整')
+                }
+            }
+            //新增商品(新增按钮)
+            $('.add_goodsinf_click').click(function (){
+                add_goods()
+            })
+            //查询商品（查询按钮）
+            $('.select_goodsinf_click').click(function (){
+                const goods_number=$('.goodsnumber').val()  //款号
+                if(goods_number){
+                    // console.log(888)
+                    $.ajax({
+                            type:'post',
+                            url:ipstr+'select_goods_list',
+                            data:{
+                                goods_number:goods_number,
+                            },
+                            success:function (res){
+                                // console.log(res[0][3])
+                                if(res=='B'){
+                                    alert('没有该商品信息')
+                                    $('.number_inp').val('')
+                                }else {
+                                    display_table (res,'.goods_information_tbody') //渲染到table中
+                                    //填入相应框中
+                                    $('.goods_describe').val(res[0][3])   //给商品描述input框赋值
+                                    $('.original_Price').val(res[0][4])   //给价格input框赋值
+                                    $('.select_frame').val(res[0][2])    //给商品分类select赋值
+                                    var ints=res[0][10]
+                                    // console.log(res,ints)
+                                    if(res[0][10]==1){   //给商品状态赋值
+                                        $('.check1').prop('checked',true)
+                                        // console.log($('.check1').checked)
+                                    }else if(res[0][10]==0) {
+                                        $('.check1').prop('checked',false)
+                                        // console.log($('.check1').checked)
+                                    }
+                                    //给颜色复选框、颜色和尺码赋值
+                                    for(i=0;i<=res.length-1;i++){
+                                        var src_url=ipstr+res[i][9]
+                                        $('.color_check_frame').append("<input  class='input_check  col_existence' type='checkbox'  checked='checked' name='"+res[i][6]+"' value='"+res[i][5]+"'>"+"颜色:"+res[i][6]+"，id（"+res[i][5]+")")    //颜色复选框
+                                        $('.color_Selected').append("<div  class='color_classification "+res[i][5]+"'><label for='' class='colorname_str'>"+res[i][6]+"</label><label for='' class='colorid_str'>("+res[i][5]+")</label><button class='select_size_btn ' id='"+res[i][5]+"'>选择尺码</button><label class='size_view sizename_str' for='' >"+res[i][8]+"</label><label for='' class='size_idz_hide sizeid_str'>"+res[i][7]+"</label><input type='file' class='select_url_frame  ' id='"+res[i][5]+"' accept=‘image/png,image/jpeg,image/jpg’ value='选择图片'  ><label class='img_url'  for=''>"+res[i][9]+"</label><div class='imgs_frame'><img class='img_url_view'  src='"+src_url+"' alt=''></div></div>")  //尺码、图片地址
+                                    }
+                                }
+
+                            }
+                    })
+                }else {
+                    alert('请输入待查商品款号')
+                }
+            })
+            //把删除商品包装成函数
+            function del_goods(){
+                const goods_number=$('.goodsnumber').val()  //款号
+                if(goods_number){
+                    $.ajax({
+                        type:'post',
+                        url:ipstr+'del_goods_list',
+                        data:{
+                            goods_number:goods_number
+                        },
+                        success:function (res){
+                            if(res=='N'){
+                                alert('要删除的记录不存在')
+                                $('.goodsnumber').val('')
+                            }else if(res=='B') {
+                                alert('删除记录失败')
+                            }else {
+                                alert('删除成功')
+                            }
+                        }
+                    })
+
+                }else {
+                    alert('请输入待删除商品款号')
+                }
+            }
+            //删除商品（删除按钮）
+            $('.del_goodsinf_click').click(function (){
+                del_goods()
+            })
+            //商品状态复选框改变事件，获取变化值
+            var check_state=true
+            $('.check1').change(function (){
+                check_state=(this).checked  //获取商品状态值(将input复选框设为true已选中)
+                // console.log(check_state)
+            })
+            //修改商品（修改按钮）
+            $('.modify_goodsinf_click').click(function (){
+                //将数据按款+颜色逐条发送给接口
+                //在接口中判断数据库中同款号颜色id是否存在，如果不存在，“新增”，如果存在“修改”，如果数据库中有修改表单没有“删除”
+                const goods_number=$('.goodsnumber').val()  //款号
+                const goods_describe=$('.goods_describe').val()  //商品描述
+                const original_Price=$('.original_Price').val()  //原价
+                const size_centent=$('.color_Selected').children('.color_classification').children('.size_view').html()  //获取已经选择尺码值
+                const imgurl_centent=$('.color_Selected').children('.color_classification').children('.imgs_frame').children('.img_url_view').attr('src')   //获取img的src
+                //将商品状态转化为0、1
+                var check_state_str=''
+                if(check_state){
+                    check_state_str=1
+                }else {
+                    check_state_str=0
+                }
+                //为了防止添加到数据库中的记录不完整，检查每条颜色下尺码是否已经添加
+                var config=true
+                var color_son_arry=$('.color_Selected').children()   //获取所有颜色元素数组
+                var color_id_arrstr=[]   //定义空数组，用于存放颜色id值
+                color_son_arry.each(function (index,e){      //遍历生成的元素数组,检查是否都有添加尺码信息
+                    const size_str=$(this).find('.sizename_str').html()  //尺码名
+                    if(!size_str){      //如果有一条颜色下尺码为空
+                        config=false
+                    }
+                    const url_str=$(this).find('.img_url').html()   //图片地址
+                    if(!url_str){       //如果有一条颜色下图片地址为空
+                        config=false
+                    }
+                    const co_id1=$(this).find('.colorid_str').html().slice(1)  //颜色id(去除首字符左括号)
+                    const co_id2=co_id1.substring(0,co_id1.length-1)  //去除尾字符右括号
+                    color_id_arrstr.push(co_id2)  //将所有颜色id添加到数组中
+                })
+                // console.log(config)
+                if(goods_number&&goods_describe&&original_Price&&size_centent&&imgurl_centent&&select_val&&config){  //如果资料齐全(select_val为商品分类值）
+                    var color_son_arr=$('.color_Selected').children()   //获取所有颜色元素数组
+                    // var color_count=$('.color_Selected').children().length  //颜色的数量，以此作为循环次数
+                    color_son_arr.each(function (index,e){      //遍历生成的颜色元素
+
+                        const colorname_str=$(this).find('.colorname_str').html()  //颜色名
+                        const colorid_str=$(this).find('.colorid_str').html().slice(1)  //颜色id(去除首字符左括号)
+                        const newcolorid_str=colorid_str.substring(0,colorid_str.length-1)  //去除尾字符右括号
+                        const sizename_str=$(this).find('.sizename_str').html()  //尺码名
+                        // console.log('sizename_str:',sizename_str)
+                        // const newsizename_str=sizename_str.substring(0,sizename_str.length-1)//尺码名（去除尾字符逗号）
+                        const sizeid_str=$(this).find('.sizeid_str').html()   //尺码id
+                        // console.log('sizeid_str:',sizeid_str)
+                        // const newsizeid_str=sizeid_str.substring(0,sizeid_str.length-1)//尺码id（去除尾字符逗号）
+                        const img_url_str=$(this).find('.img_url').html()   //图片地址
+                        // console.log(colorname_str,newcolorid_str,newsizename_str,newsizeid_str,img_url_str)
+                        $.ajax({
+                            type:'post',
+                            url:ipstr+'modify_goods_list',
+                            data:{
+                                goods_number:goods_number,
+                                goods_describe:goods_describe,
+                                original_Price:original_Price,
+                                goods_class:select_val,
+                                colorname_str:colorname_str,
+                                colorid_str:newcolorid_str,
+                                // sizename_str:newsizename_str,
+                                sizename_str:sizename_str,
+                                // sizeid_str:newsizeid_str,
+                                sizeid_str:sizeid_str,
+                                img_url:img_url_str,
+                                goods_state:check_state_str,
+                                color_id_arrstr:color_id_arrstr   //提前将所有颜色id提交给接口做判断
+                            },
+                            success:function (res){
+                            //     // console.log('res添加商品分类：',res)
+                                if(res=='B'){
+                                    alert('修改商品信息失败')
+                                }else {
+                                    display_table (res,'.goods_information_tbody')
+                                    //记录添加完成，清空录入框
+                                    $('.goodsnumber').val('')  //款号
+                                    $('.goods_describe').val('')  //商品描述
+                                    $('.original_Price').val('')  //原价
+                                    $('.color_Selected').html('')//清空所有颜色、尺码元素
+                                    $('.color_check_frame').html('')  //清空所有颜色复选框
+                                }
+                            }
+                        })
+                    })
+                }else {
+                    alert('请将资料填写完整')
+                }
+            })
+        })
+
+    </script>
+
+</body>
+</html>

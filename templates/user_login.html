@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jq商城(用户)后台管理系统登录</title>
+    <script src="{{url_for('static',filename='js/jQuery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/ip_add.js')}}"></script>
+<!--    <script src="{{url_for('static',filename='js/jQuery.min.js')}}"></script>-->
+</head>
+<style>
+.frame{
+    margin: 20px 40% 0 40%;
+}
+.user_frmae,.pass_frmae{
+    padding: 0 0 10px 0;
+}
+</style>
+<body>
+<div>
+        <div>
+            <h1>jq商城(用户)后台管理系统登录</h1>
+        </div>
+        <hr>
+        <form class="frame" METHOD="post">
+            <div class="user_frmae">
+                <label for="">请输入店铺名：</label>
+                <input name="shop_name" type="text"  id="shop_name"  value="">
+            </div>
+            <div class="pass_frmae">
+                <label for="">请输入密码：</label>
+                <input name="pass" type="password"  id="password"  value="">
+            </div>
+            <button type="submit" class="simb_btn">确认发送</button>
+        </form>
+    </div>
+    <script>
+        // $('.simb_btn').click(function (){
+        //     // console.log(999)
+        //     const shop_name=$('.shop_name').val()
+        //     const pass_word=$('.pass').val()
+        //     // console.log(user_name,pass_word)
+        //     if(shop_name&&pass_word){
+        //         $.ajax({
+        //             type:'post',
+        //             url:ipstr+'user_login',
+        //             data:{
+        //                 shop_name:shop_name,
+        //                 pass:pass_word,
+        //             },
+        //             success:function (){
+        //
+        //             },
+        //         })
+        //     }else {
+        //         alert('请将用户名和密码填写完整')
+        //     }
+        // })
+    </script>
+</body>
+</html>
