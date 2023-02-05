@@ -314,26 +314,47 @@ def load_swiper_imgurl(*args):
     else:
         return
 
-# 查询最近店铺
+# 查询用户本省距离最的店铺
 def calc_lately_shop(*args):
     s=len(args)
+    # print(s,args)
     if s==5:
-        sql_str = 'select * from shop_list where province=%s and state=%s and county=%s and street=%s and street_number=%s'
+        sql_str = 'select shop_name from shop_list where province=%s and state=%s and county=%s and street=%s and street_number=%s'
     elif s==4:
-        sql_str = 'select * from shop_list where province=%s and state=%s and county=%s and street=%s'
+        sql_str = 'select shop_name from shop_list where province=%s and state=%s and county=%s and street=%s'
     elif s==3:
-        sql_str = 'select * from shop_list where province=%s and state=%s and county=%s'
+        sql_str = 'select shop_name from shop_list where province=%s and state=%s and county=%s'
     elif s==2:
-        sql_str = 'select * from shop_list where province=%s and state=%s'
+        sql_str = 'select shop_name from shop_list where province=%s and state=%s'
     elif s==1:
-        sql_str = 'select * from shop_list where province=%s'
+        sql_str = 'select shop_name from shop_list where province=%s'
 
     params = args
     conn = mysqlhelp()
     res = conn.select_all(sql_str, params)
     if (res):
-        # print(res)
+        # print('result:',res)
         return res
     else:
         return
-    return ''
+
+# 查询外省距离最的店铺
+def calc_lately_shop_Field(*args):
+    res_list=[]
+    sql_str = 'select province,state from shop_list where province!=%s'
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if (res):
+        # print('result:',res)
+        for i in range(len(res)):
+            newres=res[i][0]+res[i][1]
+            # print(newres)
+            # print('i',i)
+            res_list.append(newres)
+            new_res_list=list(set(res_list))   #set删除列表中的重复元素,返回的是字典，再转化为列表
+        # print(new_res_list)
+        return new_res_list
+
+    else:
+        return

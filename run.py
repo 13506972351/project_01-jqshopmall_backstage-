@@ -563,12 +563,15 @@ def load_swiper_img():
 #处理小程序送来的用户位置，计算距离最近的店铺
 @app.route('/calc_lately_location',methods=['GET','POST'])
 def calc_lately_location():
-    province=request.form['provinces']
-    city=request.form['citys']
-    district = request.form['districts']
-    street= request.form['streets']
-    street_number = request.form['street_numbers']
-    print(province,city,district,street,street_number)
+    province=request.form['provinces'].strip('"')   #.strip('"')去除字符中的“
+    city=request.form['citys'].strip('"')
+    district = request.form['districts'].strip('"')
+    street= request.form['streets'].strip('"')
+    street_number = request.form['street_numbers'].strip('"')
+    latitude_str=request.form['latitude_strs']   #纬度
+    longitude_str=request.form['longitude_strs']  #经度
+    # print(latitude_str)
+    # print(province,city,district,street,street_number)
     location_info=[]
     if len(province)>0 and len(city)>0 and len(district)>0 and len(street)>0 and len(street_number)>0:
         location_info.append(province)
@@ -576,11 +579,32 @@ def calc_lately_location():
         location_info.append(district)
         location_info.append(street)
         location_info.append(street_number)
-    print(location_info)
 
+    tup_location_info=tuple(location_info)  #将列表转为元组
+    # print(location_info,tup_location_info)
+    shop_name=''
+    shops_list=[]
+    for i in range(len(tup_location_info),0,-1):  #用元组个数从大到小循环找出同一地点的店铺
+        str=tup_location_info[0:i]
+        # print('*',str)
+        res=calc_lately_shop(*str)    #将元组作为参数传给函数，函数用*args,会多一个外围的括号，此时在传参时在参数前加个*，作为函数拆包
+        if res:
 
+            shop_name=res[0][0]
+            # print('shop_name:',shop_name)
+            break
+            # break
+        else:
+            continue
+    if shop_name!='':
+        return shop_name
+    elif shop_name=='':
+        res1 = calc_lately_shop_Field(province)   #查询外省所有店铺的地址：省+市，返回给前端
+        if res1:
+            return res1
+    else:
+        return 'B'
 
-    return ''
 
 if __name__=='__main__':   #原生写法，单线程效率低
     app.run(host='0.0.0.0',debug=True,    #外网或局域网访问必须设置host='0.0.0.0'
