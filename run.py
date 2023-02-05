@@ -61,6 +61,8 @@ def add_content():
     master_str=request.form['master_str'],
     telep_str=request.form['telep_str'],
     pass_str=request.form['pass_str'],
+    street_str=request.form['street_str']
+    street_number_str=request.form['street_number_str']
     # print('shopname_str:',shopname_str)
     # print('shopname_str:',shopname_str,type(shopname_str),len(shopname_str))
     new_shopname = ''.join(shopname_str)  #将元组转为字符型(店铺名)
@@ -73,7 +75,7 @@ def add_content():
     else:
         md5_pass_str = md5(new_pass_str+ new_shopname[0:2] + new_shopname[len(new_shopname) - 1:len(new_shopname)])
         # 原始密码+店铺名第一二最后一个字符
-        add_res(province_str,state_str,county_str,shopname_str,master_str,telep_str,md5_pass_str)  #新增插入记录
+        add_res(province_str,state_str,county_str,shopname_str,master_str,telep_str,md5_pass_str,street_str,street_number_str)  #新增插入记录
 
         res=shop_list_select(new_shopname)   #新增完再查询
         # print('res::',res)
@@ -495,7 +497,6 @@ def select_user_goods_list(*args):
         return ''
 
 
-
 #用户管理系统，向用户商品信息表添加商品记录
 @app.route('/add_user_goods_list',methods=['GET','POST'])
 def add_user_goods_list():
@@ -538,6 +539,48 @@ def cs():
     # fileName = request.getParameter("fileName")
     # print(fileName)
     return redirect(url_for('user_manager'))
+
+
+#********************微信小程序管理部份*********************
+#定义一个变量，用于存储服务器Ip地址
+ipurl_str='http://192.168.109.110:5000/'
+
+@app.route('/load_swiper_img',methods=['GET','POST'])
+def load_swiper_img():
+    datalist = []
+    res=load_swiper_imgurl('swiper')
+    if res:
+        for i in res:
+            # print(list(i))
+            res_list=list(i)
+            newres=[ipurl_str + x for x in res_list]   #给个数组元素前面加上ip字符
+            datalist.append(newres)
+        # print('datalist:',datalist)
+        return datalist
+    else:
+        return ''
+
+#处理小程序送来的用户位置，计算距离最近的店铺
+@app.route('/calc_lately_location',methods=['GET','POST'])
+def calc_lately_location():
+    province=request.form['provinces']
+    city=request.form['citys']
+    district = request.form['districts']
+    street= request.form['streets']
+    street_number = request.form['street_numbers']
+    print(province,city,district,street,street_number)
+    location_info=[]
+    if len(province)>0 and len(city)>0 and len(district)>0 and len(street)>0 and len(street_number)>0:
+        location_info.append(province)
+        location_info.append(city)
+        location_info.append(district)
+        location_info.append(street)
+        location_info.append(street_number)
+    print(location_info)
+
+
+
+    return ''
 
 if __name__=='__main__':   #原生写法，单线程效率低
     app.run(host='0.0.0.0',debug=True,    #外网或局域网访问必须设置host='0.0.0.0'

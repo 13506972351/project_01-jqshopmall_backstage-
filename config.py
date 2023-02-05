@@ -54,15 +54,15 @@ def sys_select(sqlstr):
         return False
 
 # 添加店铺列表~~~~~~~~~~~~~~~
-def add_res(province_str,state_str,county_str,shopname_str,master_str,telep_str,pass_str):
-    sql_str= "INSERT INTO shop_list (`shop_name`,`shop_master`,`province`,`state`,`county`,`pass`,`Tel`)  VALUES (%s,%s,%s,%s,%s,%s,%s)"
-    params=[shopname_str,master_str,province_str,state_str,county_str,pass_str,telep_str,]
+def add_res(province_str,state_str,county_str,shopname_str,master_str,telep_str,pass_str,street_str,street_number_str):
+    sql_str= "INSERT INTO shop_list (`shop_name`,`shop_master`,`province`,`state`,`county`,`pass`,`Tel`,`street`,`street_number`)  VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    params=[shopname_str,master_str,province_str,state_str,county_str,pass_str,telep_str,street_str,street_number_str]
     conn = mysqlhelp()
     conn.add_del_upd(sql_str, params)
 
 # 查询店铺列表~~~~~~~~~~~~~~~
 def shop_list_select(sqlstr):
-    sql_str = 'select * from shop_list where shop_name=%s'
+    sql_str = 'select id,shop_name,shop_master,province,state,county,street,street_number,tel from shop_list where shop_name=%s'
     params = [sqlstr, ]
     conn = mysqlhelp()
     # print(conn)
@@ -300,3 +300,40 @@ def del_user_goods_information(*args):
 
 # res=select_goods_info()
 # print(res)
+
+#********************微信小程序管理部份*********************
+# 查询轮播图url
+def load_swiper_imgurl(*args):
+    sql_str = 'select img_url  from goods_list where goods_class=%s'
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if (res):
+        # print(res)
+        return res
+    else:
+        return
+
+# 查询最近店铺
+def calc_lately_shop(*args):
+    s=len(args)
+    if s==5:
+        sql_str = 'select * from shop_list where province=%s and state=%s and county=%s and street=%s and street_number=%s'
+    elif s==4:
+        sql_str = 'select * from shop_list where province=%s and state=%s and county=%s and street=%s'
+    elif s==3:
+        sql_str = 'select * from shop_list where province=%s and state=%s and county=%s'
+    elif s==2:
+        sql_str = 'select * from shop_list where province=%s and state=%s'
+    elif s==1:
+        sql_str = 'select * from shop_list where province=%s'
+
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if (res):
+        # print(res)
+        return res
+    else:
+        return
+    return ''

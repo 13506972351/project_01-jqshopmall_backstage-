@@ -25,11 +25,15 @@
                 <div class="operation_region" >
                     <div class="shop_input_frame">
                         <labeel>省份：</labeel>
-                        <input type="text" class="province shop_list" name="province">
+                        <input type="text" class="province shop_list" name="province" placeholder="格式为xx省">
                         <labeel>地级市：</labeel>
-                        <input type="text" class="state shop_list" name="state">
+                        <input type="text" class="state shop_list" name="state" placeholder="格式为xx市">
                         <labeel>县：</labeel>
-                        <input type="text" class="county shop_list" name="county">
+                        <input type="text" class="county shop_list" name="county" placeholder="格式为xx市（区县）">
+                        <labeel>街道：</labeel>
+                        <input type="text" class="street shop_list" name="county" placeholder="格式为xx街">
+                        <labeel>编号：</labeel>
+                        <input type="text" class="street_number shop_list" name="county" placeholder="格式为xx街xx号">
                         <labeel>店铺名：</labeel>
                         <input type="text" class="shopname shop_list" name="shopname" placeholder="请输入待查询/删除店铺名">
                         <labeel>经营者：</labeel>
@@ -56,7 +60,8 @@
                                 <th>省份</th>
                                 <th>地级市</th>
                                 <th>县</th>
-                                <th>后台密码</th>
+                                <th>街道</th>
+                                <th>街道门牌号</th>
                                 <th>联系电话</th>
                             </tr>
                         </thead>
@@ -340,10 +345,12 @@
                             province_str:str[0],
                             state_str:str[1],
                             county_str:str[2],
-                            shopname_str:str[3],
-                            master_str:str[4],
-                            telep_str:str[5],
-                            pass_str:str[6],
+                            street_str:str[3],
+                            street_number_str:str[4],
+                            shopname_str:str[5],
+                            master_str:str[6],
+                            telep_str:str[7],
+                            pass_str:str[8],
                             // sql_str:'select * from shopname_list where shop_name='+'"'+select_str+'"'+';'
                          },
                         success:function(res){
