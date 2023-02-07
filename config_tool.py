@@ -15,3 +15,13 @@ def md5(str):
 
 def ip_str(ipstr):
     return ipstr
+
+#封装计算两个点经纬度距离函数
+from geopy.distance import geodesic as GD
+def distance_calc(user_data,other_data):
+    distance=GD(user_data,other_data)
+    return distance
+
+#封装比较距离最小的传的函数
+def compare_min(*args):
+    return ''

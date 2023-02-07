@@ -8,6 +8,7 @@ import math,json
 
 from flask import Flask,url_for,render_template,redirect,request,jsonify
 
+
 import os
 import socket
 
@@ -545,6 +546,7 @@ def cs():
 #定义一个变量，用于存储服务器Ip地址
 ipurl_str='http://192.168.109.110:5000/'
 
+#返回轮播图地址数组
 @app.route('/load_swiper_img',methods=['GET','POST'])
 def load_swiper_img():
     datalist = []
@@ -568,8 +570,7 @@ def calc_lately_location():
     district = request.form['districts'].strip('"')
     street= request.form['streets'].strip('"')
     street_number = request.form['street_numbers'].strip('"')
-    latitude_str=request.form['latitude_strs']   #纬度
-    longitude_str=request.form['longitude_strs']  #经度
+
     # print(latitude_str)
     # print(province,city,district,street,street_number)
     location_info=[]
@@ -579,6 +580,7 @@ def calc_lately_location():
         location_info.append(district)
         location_info.append(street)
         location_info.append(street_number)
+
 
     tup_location_info=tuple(location_info)  #将列表转为元组
     # print(location_info,tup_location_info)
@@ -604,6 +606,60 @@ def calc_lately_location():
             return res1
     else:
         return 'B'
+
+
+#计算外省离用户最近的店铺
+@app.route('/calc_lately_Field_shop',methods=['GET','POST'])
+def calc_lately_Field_shop():
+    user_latitude = request.form['latitude_strs']  # 用户纬度
+    user_longitude = request.form['longitude_strs']  # 用户经度
+    shop_address_info = request.form['shop_add_info'].strip('"')   #.strip('"')去除字符中的“
+    shop_address_info=shop_address_info[0:len(shop_address_info)-1]   #去除最后一个*
+    shop_address_info=shop_address_info.split('*')   #以*为准分割列表
+    # print(shop_address_info)
+    new_shop_add_list=[]
+    for i in shop_address_info:  #循环各店名经纬度大列表
+        new_group={}
+        grouping=i.split(',')     #将单店名经纬度分割成小列表
+        # print(grouping)
+        for s in range(0,len(grouping)-1):
+            # print(grouping[0],grouping[1],grouping[2])
+            new_group[grouping[0]]={'lais':eval(grouping[1]),'lngs':eval(grouping[2])}
+    #         new_group['name']=  str(grouping[0])
+    #         new_group['lais'] = eval(grouping[1])
+    #         new_group['lngs'] = eval(grouping[2])
+        new_shop_add_list.append(new_group)   #分别添加到新的大列表中
+        # print(new_group)
+
+    user_data = (user_latitude, user_longitude)   #将用户经纬度放入元组
+    list_shop_distance=[]
+    for i in new_shop_add_list:  #遍历店铺单元
+        # print('i',i.keys())
+        lai_lng_list=[]
+        for s in i.values():      #遍历店铺内经纬度值
+            # print('s',s)
+            for y in s.values():   #遍历单店经度值和纬度值
+                # print('y',y)
+                lai_lng_list.append(y)   #将经度和纬度两次添加到列表中
+            tup_lai_lng_list=tuple(lai_lng_list)   #转元组
+            #调用两个经纬度距离函数
+            distance=distance_calc(user_data,tup_lai_lng_list)
+            strs=str(distance)    #转字符
+            num=eval(strs[0:len(strs) - 3]) #去掉单位km，再转数字
+
+        name=list(i.keys())  #key转列表
+        name.append(num)    #添加距离值
+        list_shop_distance.append(name)  #添加到大列表中
+    print(list_shop_distance)
+
+
+
+
+
+    return ''
+
+
+
 
 
 if __name__=='__main__':   #原生写法，单线程效率低
