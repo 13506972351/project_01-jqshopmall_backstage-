@@ -24,4 +24,13 @@ def distance_calc(user_data,other_data):
 
 #封装比较距离最小的传的函数
 def compare_min(*args):
-    return ''
+    list_shop=list(args[0])   #传过来参数是元组，只有一个元素，转为列表
+    # print('$$$$list_shop',list_shop)
+    min_shopname=list_shop[0][0]
+    min_data=list_shop[0][1]
+    for i in list_shop:
+        if i[1]<min_data:
+            min_shopname=i[0]
+    # print(min_shopname)
+
+    return min_shopname

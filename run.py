@@ -565,6 +565,7 @@ def load_swiper_img():
 #处理小程序送来的用户位置，计算距离最近的店铺
 @app.route('/calc_lately_location',methods=['GET','POST'])
 def calc_lately_location():
+    #小程序提交来的用户所在省地市街道信息
     province=request.form['provinces'].strip('"')   #.strip('"')去除字符中的“
     city=request.form['citys'].strip('"')
     district = request.form['districts'].strip('"')
@@ -589,19 +590,25 @@ def calc_lately_location():
     for i in range(len(tup_location_info),0,-1):  #用元组个数从大到小循环找出同一地点的店铺
         str=tup_location_info[0:i]
         # print('*',str)
-        res=calc_lately_shop(*str)    #将元组作为参数传给函数，函数用*args,会多一个外围的括号，此时在传参时在参数前加个*，作为函数拆包
+        res=calc_lately_shop(*str)    #将元组作为参数传给函数，函数用*args,会多一个外围的括号，此时在传参时在参数前加个*，作为函数拆包,返回店铺名
         if res:
-
-            shop_name=res[0][0]
-            # print('shop_name:',shop_name)
-            break
-            # break
+            # print('res',res)
+            for i in res:    #由于满足条件的店铺不止一个，遍历所有满足条件的店名，找出有添加商品的店铺
+                # print('i',i)
+                res1 = select_useroods_list(i)  # 查询该店铺有没有添加user_goods_list商品资料
+                if res1:
+                    # print('res1=',res1[0][8])   #因为res1为该店商品信息，不止一条，选第一条的店铺名称
+                    shop_name=res1[0][8]
+                    # print('shop_name:',shop_name)
+                    break
         else:
             continue
+    # print('shop_name=',shop_name)
     if shop_name!='':
         return shop_name
     elif shop_name=='':
-        res1 = calc_lately_shop_Field(province)   #查询外省所有店铺的地址：省+市，返回给前端
+        res1 = calc_lately_shop_Field(province)   #查询外省所有店铺的地址：(省+市*店铺名)，返回给前端
+        # print("res1====",res1)
         if res1:
             return res1
     else:
@@ -616,7 +623,7 @@ def calc_lately_Field_shop():
     shop_address_info = request.form['shop_add_info'].strip('"')   #.strip('"')去除字符中的“
     shop_address_info=shop_address_info[0:len(shop_address_info)-1]   #去除最后一个*
     shop_address_info=shop_address_info.split('*')   #以*为准分割列表
-    # print(shop_address_info)
+    # print('&&&&&',shop_address_info)
     new_shop_add_list=[]
     for i in shop_address_info:  #循环各店名经纬度大列表
         new_group={}
@@ -650,13 +657,14 @@ def calc_lately_Field_shop():
         name=list(i.keys())  #key转列表
         name.append(num)    #添加距离值
         list_shop_distance.append(name)  #添加到大列表中
-    print(list_shop_distance)
+    # print('*',list_shop_distance,len(list_shop_distance))
 
-
-
-
-
-    return ''
+    res=compare_min(list_shop_distance)
+    # print('^^^res',res)
+    if res:
+        return res
+    else:
+        return 'B'
 
 
 

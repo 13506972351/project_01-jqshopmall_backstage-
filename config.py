@@ -254,9 +254,10 @@ def user_loin_select(*args):
     else:
         return  # 记录不存在返回none
 
-#查询所有商品信息（款号唯一值,禁用的除外）
+#查询所有商品信息（款号唯一值,禁用的和轮播图分类的除外）
 def select_goods_number_info(*args):
-    sql_str = "select distinct goods_number from goods_list where goods_state=1"
+    sql_str = "select distinct goods_number from goods_list where goods_state=1 and goods_class!='swiper'"
+
     params = args  # 如果用*args作为参数，args本身是元组不需要加[args,]中括号及逗号
     conn = mysqlhelp()
     # print(args)
@@ -341,18 +342,26 @@ def calc_lately_shop(*args):
 # 查询外省距离最的店铺
 def calc_lately_shop_Field(*args):
     res_list=[]
-    sql_str = 'select province,state from shop_list where province!=%s'
+    new_res_list=[]
+    sql_str = 'select province,state,shop_name from shop_list where province!=%s'
     params = args
     conn = mysqlhelp()
     res = conn.select_all(sql_str, params)
     if (res):
         # print('result:',res)
+
         for i in range(len(res)):
-            newres=res[i][0]+res[i][1]
-            # print(newres)
-            # print('i',i)
-            res_list.append(newres)
-            new_res_list=list(set(res_list))   #set删除列表中的重复元素,返回的是字典，再转化为列表
+            # print('res[i][2]',res[i][2])
+            res2 = select_useroods_list(res[i][2])  # 查询该店铺有没有添加user_goods_list商品资料
+            # print('res2',res2)
+            if res2:
+                # print('*i=',i)
+                newres=res[i][0]+res[i][1]+'*'+res[i][2]
+                # print(newres)
+                # print('i',i)
+                res_list.append(newres)
+                # print(res_list)
+                new_res_list=list(set(res_list))   #set删除列表中的重复元素,返回的是字典，再转化为列表
         # print(new_res_list)
         return new_res_list
 
@@ -360,3 +369,14 @@ def calc_lately_shop_Field(*args):
         return
 
 
+#查询最近店铺是否有添加商品到店商品管理表中，如果没有，会选择另一家近的店铺
+def select_useroods_list(*args):
+    sql_str = 'select * from user_goods_list where shop_name=%s'
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if (res):
+        # print('result:',res)
+        return res
+    else:
+        return
