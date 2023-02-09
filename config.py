@@ -380,3 +380,27 @@ def select_useroods_list(*args):
         return res
     else:
         return
+
+#查询主视区图片地址
+def select_central_vision_img(*args):
+    sql_str = 'select distinct goods_number,goods_describe,original_price,sale_price,img_url,shop_name from user_goods_list where shop_name=%s '
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if (res):
+        # print('result:',res)
+        return res
+    else:
+        return
+
+#查询商品祥情信息
+def load_goods_specific_info(*args):
+    sql_str = 'select * from user_goods_list where goods_number=%s and shop_name=%s'
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if (res):
+        # print('result:',res)
+        return res
+    else:
+        return

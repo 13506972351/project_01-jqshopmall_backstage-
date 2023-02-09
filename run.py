@@ -544,14 +544,15 @@ def cs():
 
 #********************微信小程序管理部份*********************
 #定义一个变量，用于存储服务器Ip地址
-ipurl_str='http://192.168.109.110:5000/'
 
+ipurl_str=return_ip()   #调用服务器ip地址配置函数
 #返回轮播图地址数组
 @app.route('/load_swiper_img',methods=['GET','POST'])
 def load_swiper_img():
     datalist = []
     res=load_swiper_imgurl('swiper')
     if res:
+        # print(res)
         for i in res:
             # print(list(i))
             res_list=list(i)
@@ -606,6 +607,8 @@ def calc_lately_location():
     # print('shop_name=',shop_name)
     if shop_name!='':
         return shop_name
+
+
     elif shop_name=='':
         res1 = calc_lately_shop_Field(province)   #查询外省所有店铺的地址：(省+市*店铺名)，返回给前端
         # print("res1====",res1)
@@ -666,8 +669,65 @@ def calc_lately_Field_shop():
     else:
         return 'B'
 
+#返回中央主视区图片接口
+@app.route('/central_vision_img_get',methods=['GET','POST'])
+def central_vision_img_get():
+    lately_shop_name = request.form['lately_shop_name']  # 最近店铺名
 
+    new_datalist=[]
+    # print('**',lately_shop_name)
+    res=select_central_vision_img(lately_shop_name)
+    if res:
+        for i in res:
+            datalist = {}
+            datalist['goods_number']=(i[0])
+            datalist['goods_describe'] = (i[1])
+            datalist['goods_original'] = (i[2])
+            datalist['goods_sale'] = (i[3])
+            datalist['goods_url'] = (ipurl_str+i[4])
+            datalist['shop_name'] = (i[5])
+            # list_res = list(i)
+            # print('777',datalist)
 
+            new_datalist.append(datalist)
+        # print('new_datalist:',new_datalist)
+        return list(new_datalist)
+    else:
+        return ''
+
+#商品祥情页面获取图片及商品资料接口
+@app.route('/load_goods_specific',methods=['GET','POST'])
+def load_goods_specific():
+    goods_number=request.form['goods_name']
+    shop_name=request.form['shop_name']
+    res=load_goods_specific_info(goods_number,shop_name)
+    res1=shop_list_select(shop_name)
+    print('res1',res1)
+    new_datalist = []
+    if res:
+        for i in res:
+            datalist = {}
+            datalist['goods_number']=(i[1])
+            datalist['goods_class']=(i[2])
+            datalist['color_id'] = (i[3])
+            datalist['color_name'] = (i[4])
+            datalist['size_id'] = (i[5])
+            datalist['size_name'] = (i[6])
+            datalist['sale_price'] = (i[7])
+            datalist['shop_name'] = (i[8])
+            datalist['original_price'] = (i[9])
+            datalist['img_url'] = (ipurl_str + i[10])
+            datalist['goods_describe'] = (i[11])
+            datalist['shop_add']=(res1[0][3]+res1[0][4])
+            # list_res = list(i)
+            # print('777',datalist)
+            new_datalist.append(datalist)
+        # print('new_datalist:',new_datalist)
+        return list(new_datalist)
+    else:
+        return ''
+    # print('---',res)
+    return ''
 
 
 if __name__=='__main__':   #原生写法，单线程效率低
