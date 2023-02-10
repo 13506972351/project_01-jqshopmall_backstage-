@@ -702,7 +702,7 @@ def load_goods_specific():
     shop_name=request.form['shop_name']
     res=load_goods_specific_info(goods_number,shop_name)
     res1=shop_list_select(shop_name)
-    print('res1',res1)
+    # print('res1',res1)
     new_datalist = []
     if res:
         for i in res:
@@ -719,6 +719,7 @@ def load_goods_specific():
             datalist['img_url'] = (ipurl_str + i[10])
             datalist['goods_describe'] = (i[11])
             datalist['shop_add']=(res1[0][3]+res1[0][4])
+
             # list_res = list(i)
             # print('777',datalist)
             new_datalist.append(datalist)
