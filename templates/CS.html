@@ -116,8 +116,10 @@
 <!--<button onclick="fun"  >点击执行函数</button>-->
 <!--<input type="checkbox" class="inp">-->
 <!--<button onclick="fun" class="btn">点击执行函数</button>-->
-<input type="number" oninput="value=value.replace(/[^\d]/g,'')">
+<!--<input type="number" oninput="value=value.replace(/[^\d]/g,'')">-->
 <input type="number" >
+<!--<div><img src="f1b.jpg" alt=""></div>-->
+
   <script>
       // $('.two :nth-child(2):nth-child(1)').css("background-color","yellow")
       // console.log(son2)
@@ -219,6 +221,51 @@
       //
       // var ss=get(11111)
       // console.log(ss)
+      //类似查找
+      var list1=[{'class_name':'男大童服装'},{'class_name':'男大童鞋子'},{'class_name':'女大童服装'},{'class_name':'女大童鞋子'},{'class_name':'篮球'},{'class_name':'内裤'},{'class_name':'袜子'},{'class_name':'书包'}]
+      // console.log(list1[0]["class"])
+      // var fs=/服装/
+      // fs.test(list1[0]['class'])
+      function query(list1){
+        const reg_fashion = /服装/ // 创建服装正则表达式
+        const reg_shoe=/鞋子/     // 创建鞋子正则表达式
+        const fashion_arr = []
+        const shoe_arr = []
+        const other_arr = []
+        const all_arr=[]
+        // console.log(list1[0]["class_name"])
+        for (var i = 0; i <= list1.length-1; i++){
+
+            if (reg_fashion.test(list1[i]['class_name'])){
+                fashion_arr.push(list1[i]['class_name'])
+                // console.log('服',list1[i][class_name])
+            }else if(reg_shoe.test(list1[i]['class_name'])){
+                shoe_arr.push(list1[i]['class_name'])
+                // console.log('鞋',list1[i][class_name])
+            }else {
+                other_arr.push(list1[i]['class_name'])
+                // console.log('其它',i,list1[i][class_name])
+            }
+        }
+        console.log(fashion_arr,shoe_arr,other_arr)
+        all_arr.push(fashion_arr)
+        all_arr.push(shoe_arr)
+        all_arr.push(other_arr)
+        return all_arr
+      }
+
+      var res=query(list1,'服装','鞋子','class_name')
+      // console.log(res)
+
+      // console.log('你好，我是测试exe文件')
+      // var str='男大童服装'
+      // var str1='男大童鞋子'
+      // var reg=/服装/
+      // console.log('***',reg.test(str1))
+
+      var listd=['a','b',13,'ad','a','b']
+      var nlist=Array.from(new Set(listd))
+      console.log(nlist)
   </script>
 
 </body>

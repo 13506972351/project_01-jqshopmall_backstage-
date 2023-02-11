@@ -383,7 +383,7 @@ def select_useroods_list(*args):
 
 #查询主视区图片地址
 def select_central_vision_img(*args):
-    sql_str = 'select distinct goods_number,goods_describe,original_price,sale_price,img_url,shop_name from user_goods_list where shop_name=%s '
+    sql_str = 'select distinct goods_number,goods_describe,original_price,sale_price,img_url,shop_name,goods_class from user_goods_list where shop_name=%s '
     params = args
     conn = mysqlhelp()
     res = conn.select_all(sql_str, params)

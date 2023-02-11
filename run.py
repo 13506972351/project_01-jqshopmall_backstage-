@@ -686,6 +686,7 @@ def central_vision_img_get():
             datalist['goods_sale'] = (i[3])
             datalist['goods_url'] = (ipurl_str+i[4])
             datalist['shop_name'] = (i[5])
+            datalist['shop_class']=(i[6])
             # list_res = list(i)
             # print('777',datalist)
 
