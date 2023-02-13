@@ -696,6 +696,33 @@ def central_vision_img_get():
     else:
         return ''
 
+#点击主视区商品分类，查询商品图片，渲染主视区
+@app.route('/appoint_goodsclass_central_vision_img_get',methods=['GET','POST'])
+def appoint_goodsclass_central_vision_img_get():
+    lately_shop_name = request.form['lately_shop_name']  # 最近店铺名
+    appoint_goodsclass_name=request.form['appoint_goods_class']    #指定商品分类
+    new_datalist=[]
+    # print('**',lately_shop_name,appoint_goodsclass_name)
+    res=appoint_goodsclass_select_central_vision_img(lately_shop_name,appoint_goodsclass_name)
+    # print(res)
+    if res:
+        for i in res:
+            datalist = {}
+            datalist['goods_number']=(i[0])
+            datalist['goods_describe'] = (i[1])
+            datalist['goods_original'] = (i[2])
+            datalist['goods_sale'] = (i[3])
+            datalist['goods_url'] = (ipurl_str+i[4])
+            datalist['shop_name'] = (i[5])
+            datalist['shop_class']=(i[6])
+            # list_res = list(i)
+            # print('777',datalist)
+
+            new_datalist.append(datalist)
+        # print('new_datalist:',new_datalist)
+        return list(new_datalist)
+    else:
+        return ''
 #商品祥情页面获取图片及商品资料接口
 @app.route('/load_goods_specific',methods=['GET','POST'])
 def load_goods_specific():
