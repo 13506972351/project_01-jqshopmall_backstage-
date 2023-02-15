@@ -6,3 +6,4 @@ var user_lai=0
 
 var user_lng=0
 
+

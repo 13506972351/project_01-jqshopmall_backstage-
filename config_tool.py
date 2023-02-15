@@ -18,8 +18,7 @@ def md5(str):
 
 # print(md5('qxlEDP951039@163$adn'))#qxlEDP951039@163$+用户名admin第一二和最后一个字符
 
-def ip_str(ipstr):
-    return ipstr
+
 
 #封装计算两个点经纬度距离函数
 from geopy.distance import geodesic as GD
@@ -39,3 +38,15 @@ def compare_min(*args):
     # print(min_shopname)
 
     return min_shopname
+
+#封装微信小程序appid和AppSecret
+class appid_appsecret:
+    def __init__(self):
+        return  (wx193e6800afd04da4)
+    # def app_id(self):
+
+    # def app_secret(self):
+    #     return '8572f140718cf3131a90b1139ed193b6'
+
+app_str=appid_appsecret()
+# print(app_str)
