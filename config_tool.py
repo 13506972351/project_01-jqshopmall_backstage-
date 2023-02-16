@@ -1,3 +1,5 @@
+
+import requests
 #配置服务器ip地址
 def return_ip():
     ip="http://192.168.109.111:5000/"
@@ -40,13 +42,30 @@ def compare_min(*args):
     return min_shopname
 
 #封装微信小程序appid和AppSecret
-class appid_appsecret:
-    def __init__(self):
-        return  (wx193e6800afd04da4)
-    # def app_id(self):
+def appid():
+    ids='wx11312dda556c34cd'
+    return ids
+def appsecre():
+    secre='05a66b157ba57f6c1a3f645b3872dbe0'
+    return secre
 
-    # def app_secret(self):
-    #     return '8572f140718cf3131a90b1139ed193b6'
+#向微信服务器发送请求https://api.weixin.qq.com/sns/jscode2session，获取openid session_key
+def get_openid_session_key( appid, code,secret):
+        # print(appid,code,secret)
+        url='https://api.weixin.qq.com/sns/jscode2session'
+        parmas = {
+            'appid': appid,
+            'secret': secret,
+            'js_code': code,
+            'grant_type': 'authorization_code'
+        }
+        # Response=requests.post(url,datas)
+        response=requests.get(url,params=parmas)
+        # openid=Response.json().get('openid', '')  #获取openid
 
-app_str=appid_appsecret()
-# print(app_str)
+
+        return response
+
+
+
+

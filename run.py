@@ -7,7 +7,7 @@ from config_tool import *
 import math,json
 
 from flask import Flask,url_for,render_template,redirect,request,jsonify
-
+from datetime import datetime
 
 import os
 import socket
@@ -757,6 +757,31 @@ def load_goods_specific():
         return ''
     # print('---',res)
     return ''
+
+#微信用户登录接口
+@app.route('/wx_user_login',methods=['GET','POST'])
+def wx_user_login():
+    lately_shop_name=request.form['shop_name']
+    code_str=request.form['code_str']
+    app_id=appid()   #调用配置函数，
+    app_secres=appsecre()
+
+    res=get_openid_session_key(app_id, code_str, app_secres)  #调用获取openid和session_key接口
+    if res:
+
+        openid = res.json().get('openid', '')  # 获取openid
+        session_key=res.json().get('session_key','')  # 获取session_key
+        key=md5(openid)  #调用md5加密session_key
+        dt01 = datetime.today()  #获取当前日期
+        dates=dt01.date()
+        write_vip_info(lately_shop_name,dates,openid,key)  #写入数据库
+
+
+        return key
+    else:
+        return 'B'
+
+
 
 
 if __name__=='__main__':   #原生写法，单线程效率低

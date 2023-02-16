@@ -416,3 +416,12 @@ def load_goods_specific_info(*args):
         return res
     else:
         return
+
+#向vip_table写入相关信息
+def write_vip_info(*args):
+    sql_str = "INSERT INTO vip_table (`ascription_shop`,`register_date`,`openid`,`login_key`)  VALUES (%s,%s,%s,%s)"
+
+    params = args
+    conn = mysqlhelp()
+    # print(conn)
+    conn.add_del_upd(sql_str, params)
