@@ -761,10 +761,15 @@ def load_goods_specific():
 #微信用户查询是否已经注册过
 @app.route('/select_key',methods=['GET','POST'])
 def select_key():
+    vip_arry=[]
     key_str=request.form['key']
+    # print('dd', key_str)
     res=select_keys(key_str)
+
     if res:
-        return 'R'    #已经注册过
+        for i in res:
+            vip_arry.append(i)
+        return vip_arry    #已经注册过
     else:
         return 'N'    #没有注册过
 #微信用户登录接口
@@ -785,16 +790,17 @@ def wx_user_login():
         # print(openid)
         # 查询是否已经存在openid
         res1=select_openid(openid)
-        print('res1',res1)
+        # print('res1',res1)
         if res1:
-            print('重复')
+            # print('重复')
             return 'R'   #存在重复值
         else:
-            print("不重复")
+            # print("不重复")
             session_key=res.json().get('session_key','')  # 获取session_key
             key=md5(openid)  #调用md5加密session_key
             dt01 = datetime.today()  #获取当前日期
             dates=dt01.date()
+            # print('qqddd',lately_shop_name,dates,openid,key,nick,sex,tel,add)
             write_vip_info(lately_shop_name,dates,openid,key,nick,sex,tel,add)  #写入数据库
             return key    #注册成功
 

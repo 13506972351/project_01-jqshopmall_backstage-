@@ -430,7 +430,8 @@ def select_openid(*args):
 
 #向vip_table写入相关信息
 def write_vip_info(*args):
-    sql_str = "INSERT INTO vip_table (`ascription_shop`,`register_date`,`openid`,`login_key`,`nick_name`,`sex`,`telethone`,`rec_add`)  VALUES (%s,%s,%s,%s)"
+    # print('ddd', lately_shop_name, dates, openid, key, nick, sex, tel, add)
+    sql_str = "INSERT INTO vip_table (`ascription_shop`,`register_date`,`openid`,`login_key`,`nick_name`,`sex`,`telethone`,`rec_add`)  VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
 
     params = args
     conn = mysqlhelp()
