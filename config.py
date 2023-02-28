@@ -417,11 +417,33 @@ def load_goods_specific_info(*args):
     else:
         return
 
+#查询是否有相同的openid，即是否已经注册过了
+def select_openid(*args):
+    sql_str="select * from vip_table where openid=%s"
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if res:
+        return res
+    else:
+        return
+
 #向vip_table写入相关信息
 def write_vip_info(*args):
-    sql_str = "INSERT INTO vip_table (`ascription_shop`,`register_date`,`openid`,`login_key`)  VALUES (%s,%s,%s,%s)"
+    sql_str = "INSERT INTO vip_table (`ascription_shop`,`register_date`,`openid`,`login_key`,`nick_name`,`sex`,`telethone`,`rec_add`)  VALUES (%s,%s,%s,%s)"
 
     params = args
     conn = mysqlhelp()
     # print(conn)
     conn.add_del_upd(sql_str, params)
+
+#微信用户查询是否已经注册过
+def select_keys(*args):
+    sql_str = "select * from vip_table where login_key=%s"
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    if res:
+        return res
+    else:
+        return

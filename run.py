@@ -758,28 +758,49 @@ def load_goods_specific():
     # print('---',res)
     return ''
 
+#微信用户查询是否已经注册过
+@app.route('/select_key',methods=['GET','POST'])
+def select_key():
+    key_str=request.form['key']
+    res=select_keys(key_str)
+    if res:
+        return 'R'    #已经注册过
+    else:
+        return 'N'    #没有注册过
 #微信用户登录接口
 @app.route('/wx_user_login',methods=['GET','POST'])
 def wx_user_login():
     lately_shop_name=request.form['shop_name']
     code_str=request.form['code_str']
-    app_id=appid()   #调用配置函数，
-    app_secres=appsecre()
-
+    nick=request.form['nicks']   #呢称
+    sex=request.form['sexs']    #性别
+    tel=request.form['tels']    #电话
+    add=request.form['adds']     #收货地址
+    app_id=appid()   #调用配置函数取得appid，
+    app_secres=appsecre()  #调用配置函数取得AppSecret
+    # print(lately_shop_name,code_str,nick,sex,tel,add,app_id,app_secres)
     res=get_openid_session_key(app_id, code_str, app_secres)  #调用获取openid和session_key接口
     if res:
-
         openid = res.json().get('openid', '')  # 获取openid
-        session_key=res.json().get('session_key','')  # 获取session_key
-        key=md5(openid)  #调用md5加密session_key
-        dt01 = datetime.today()  #获取当前日期
-        dates=dt01.date()
-        write_vip_info(lately_shop_name,dates,openid,key)  #写入数据库
+        # print(openid)
+        # 查询是否已经存在openid
+        res1=select_openid(openid)
+        print('res1',res1)
+        if res1:
+            print('重复')
+            return 'R'   #存在重复值
+        else:
+            print("不重复")
+            session_key=res.json().get('session_key','')  # 获取session_key
+            key=md5(openid)  #调用md5加密session_key
+            dt01 = datetime.today()  #获取当前日期
+            dates=dt01.date()
+            write_vip_info(lately_shop_name,dates,openid,key,nick,sex,tel,add)  #写入数据库
+            return key    #注册成功
 
-
-        return key
+        # return key
     else:
-        return 'B'
+        return 'B'   #获取openid和session_key失败
 
 
 
