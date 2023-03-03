@@ -2,7 +2,7 @@
 import requests
 #配置服务器ip地址
 def return_ip():
-    ip="http://192.168.0.108:5000/"
+    ip="http://192.168.0.105:5000/"
     return ip
 
 # os.listdir(path)读取文件名时会自动多出一个Thumbs.db文件，去除函数

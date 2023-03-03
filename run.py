@@ -761,15 +761,19 @@ def load_goods_specific():
 #微信用户查询是否已经注册过
 @app.route('/select_key',methods=['GET','POST'])
 def select_key():
-    vip_arry=[]
+    vip_car_arry=[]
     key_str=request.form['key']
-    # print('dd', key_str)
-    res=select_keys(key_str)
-
+    print('dd', key_str)
+    res=select_keys(key_str)    #查询会员表
     if res:
         for i in res:
-            vip_arry.append(i)
-        return vip_arry    #已经注册过
+            vip_car_arry.append(i)
+        # return vip_arry    #已经注册过
+        res1 = select_shop_car(key_str)  # 查询购物车表
+        if res1:
+            for i in res1:
+                vip_car_arry.append(i)
+        return vip_car_arry
     else:
         return 'N'    #没有注册过
 #微信用户登录接口

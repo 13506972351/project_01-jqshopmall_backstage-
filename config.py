@@ -448,3 +448,15 @@ def select_keys(*args):
         return res
     else:
         return
+
+#查询微信小程序用户购物车信息
+def select_shop_car(*args):
+    sql_str = "select * from shop_car where login_key=%s"
+    params = args
+    conn = mysqlhelp()
+    res = conn.select_all(sql_str, params)
+    print(res)
+    if res:
+        return res
+    else:
+        return
