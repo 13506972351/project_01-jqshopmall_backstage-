@@ -1,6 +1,7 @@
 #coding=utf-8
 import pymysql
 import traceback
+from config_tool import *
 # 将数据库操作封装成类
 class mysqlhelp:
     def __init__(self,host='127.0.0.1',port=3306,user='root',password='admin123',database='shopmall_jq',charset='utf8'):
@@ -440,7 +441,7 @@ def write_vip_info(*args):
 
 #微信用户查询是否已经注册过
 def select_keys(*args):
-    sql_str = "select * from vip_table where login_key=%s"
+    sql_str = "select ascription_shop,nick_name,telethone,sex,rec_add,register_date,login_key from vip_table where login_key=%s"
     params = args
     conn = mysqlhelp()
     res = conn.select_all(sql_str, params)
@@ -450,9 +451,15 @@ def select_keys(*args):
         return
 
 #查询微信小程序用户购物车信息
+
 def select_shop_car(*args):
-    sql_str = "select * from shop_car where login_key=%s"
-    params = args
+    ip_str = return_ip()
+    tup1=(ip_str,)   #将ip值放入元组
+    #concat函数合并字段值
+    # print(args)
+    sql_str = 'select nick_name,telethone,ascription_shop,goods_describe,color_id,color_name,size_id,size_name,count,sale_price,money,concat(%s,img_url),login_key from shop_car where login_key=%s'
+    params = tup1+args  #将两个元组合并
+    # print(params)
     conn = mysqlhelp()
     res = conn.select_all(sql_str, params)
     print(res)
