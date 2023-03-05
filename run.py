@@ -817,8 +817,14 @@ def wx_user_login():
     else:
         return 'B'   #获取openid和session_key失败
 
-
-
+#修改购物车数量接口
+@app.route('/updata_shop_car',methods=['GET','POST'])
+def updata_shop_car():
+    id=request.form['id']
+    count=request.form['count']
+    res=updata_shop_car_count(count,id)
+    # print(res)
+    return res
 
 if __name__=='__main__':   #原生写法，单线程效率低
     app.run(host='0.0.0.0',debug=True,    #外网或局域网访问必须设置host='0.0.0.0'

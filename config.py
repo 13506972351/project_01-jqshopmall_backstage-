@@ -457,13 +457,24 @@ def select_shop_car(*args):
     tup1=(ip_str,)   #将ip值放入元组
     #concat函数合并字段值
     # print(args)
-    sql_str = 'select nick_name,telethone,ascription_shop,goods_describe,color_id,color_name,size_id,size_name,count,sale_price,money,concat(%s,img_url),login_key from shop_car where login_key=%s'
+    sql_str = 'select id, nick_name,telethone,ascription_shop,goods_describe,color_id,color_name,size_id,size_name,count,sale_price,money,concat(%s,img_url),login_key from shop_car where login_key=%s'
     params = tup1+args  #将两个元组合并
     # print(params)
     conn = mysqlhelp()
     res = conn.select_all(sql_str, params)
-    print(res)
+    # print(res)
     if res:
         return res
     else:
         return
+
+def updata_shop_car_count(*args):
+    sql_str = 'update  shop_car set count=%s where id=%s'
+    params = args
+    conn = mysqlhelp()
+    res=conn.add_del_upd(sql_str, params)
+    # print('tool',res)
+    if res=='T':
+        return 'T'
+    else:
+        return 'B'
